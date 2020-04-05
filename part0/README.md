@@ -1,6 +1,6 @@
-#Part 0 - Fundamentals of Web apps
+# Part 0 - Fundamentals of Web apps
 
-##0.4: new note
+## 0.4: new note
 
 In chapter Loading a page containing JavaScript - revised the chain of events caused by opening the page https://fullstack-exampleapp.herokuapp.com/notes is depicted as a sequence diagram.
 
@@ -12,11 +12,11 @@ The diagram does not have to be a sequence diagram. Any sensible way of presenti
 
 All necessary information for doing this, and the next three exercises, can be found from the text of this part. The idea of these exercises is to read the text through once more, and to think through what is going on where. Reading the application code is not necessary, but it is of course possible.
 
-##0.5: Single page app
+## 0.5: Single page app
 
 Create a diagram depicting the situation where the user goes to the single page app version of the notes app at https://fullstack-exampleapp.herokuapp.com/spa.
 
-##0.6: New note
+## 0.6: New note
 
 Create a diagram depicting the situation, where user creates a new note using the single page version of the app.
 
