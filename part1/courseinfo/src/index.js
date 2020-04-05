@@ -30,36 +30,30 @@ const App = () => {
 
 const Header = (args) => {
     return (
-        <div>
-            <h1>{args.course}</h1>
-        </div>
+        <h1>{args.course}</h1>
     )
 }
 
 const Content = (args) => {
     return (
-        <div>
-             <p>
-                 {args.part1} {args.ex1}
-             </p>
-             <p>
-                 {args.part2} {args.ex2}
-             </p>
-             <p>
-                 {args.part3} {args.ex3}
-             </p>
-        </div>
+        <>
+            <Part part={args.part1} ex={args.ex1}/>
+            <Part part={args.part2} ex={args.ex2}/>
+            <Part part={args.part3} ex={args.ex3}/>
+        </>
+    )
+}
+
+const Part = (args) => {
+    return (
+        <p>{args.part} {args.ex}</p>
     )
 }
 
 const Total = (args) => {
     return (
-        <div>
-            <p>Number of exercises {args.ex1 + args.ex2 + args.ex3}</p>
-        </div>
+        <p>Number of exercises {args.ex1 + args.ex2 + args.ex3}</p>
     )
 }
-
-
 
 ReactDOM.render(<App />, document.getElementById('root'))
