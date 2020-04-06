@@ -31,7 +31,6 @@ const App = () => {
     )
 }
 
-
 const Button = ({handleClick, text}) => {
     return(
         <button onClick={handleClick}>
@@ -42,19 +41,23 @@ const Button = ({handleClick, text}) => {
 
 const Statistics = ({good, neutral, bad}) => {
     let all = good + neutral + bad;
-
     //console.log(good, neutral, bad);
 
     if(all !== 0) {
         return (
             <div>
                 <h1>Stats</h1>
-                <Statistic text={'good:'} value={good}/>
-                <Statistic text={'neutral:'} value={neutral}/>
-                <Statistic text={'bad:'} value={bad}/>
-                <Statistic text={'all:'} value={all}/>
-                <Statistic text={'avg:'} value={(good - bad)/all}/>
-                <Statistic text={'positive(%):'} value={(good/all)*100}/>
+
+                <table>
+                    <tbody>
+                    <Statistic text={'good:'} value={good}/>
+                    <Statistic text={'neutral:'} value={neutral}/>
+                    <Statistic text={'bad:'} value={bad}/>
+                    <Statistic text={'all:'} value={all}/>
+                    <Statistic text={'avg:'} value={(good - bad)/all}/>
+                    <Statistic text={'positive(%):'} value={(good/all)*100}/>
+                    </tbody>
+                </table>
             </div>
         )
     }
@@ -70,7 +73,10 @@ const Statistics = ({good, neutral, bad}) => {
 
 const Statistic = ({text, value}) => {
     return(
-        <p>{text} {value}</p>
+        <tr>
+            <td>{text}</td>
+            <td>{value}</td>
+        </tr>
     )
 }
 
