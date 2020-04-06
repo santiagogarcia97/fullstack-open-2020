@@ -24,17 +24,27 @@ const Statistics = ({good, neutral, bad}) => {
 
     console.log(good, neutral, bad);
 
-    return (
-        <>
-           <h1>Stats</h1>
-            <p>good: {good}</p>
-            <p>neutral: {neutral}</p>
-            <p>bad: {bad}</p>
-            <p>all: {all}</p>
-            <p>avg: {(good - bad)/all}</p>
-            <p>positive: {(good/all)*100}%</p>
-        </>
-    )
+    if(all !== 0) {
+        return (
+            <>
+                <h1>Stats</h1>
+                <p>good: {good}</p>
+                <p>neutral: {neutral}</p>
+                <p>bad: {bad}</p>
+                <p>all: {all}</p>
+                <p>avg: {(good - bad)/all}</p>
+                <p>positive: {(good/all)*100}%</p>
+            </>
+        )
+    }
+    else {
+        return (
+            <>
+                <h1>Stats</h1>
+                <p>No feedback given</p>
+            </>
+        )
+    }
 }
 
 ReactDOM.render(<App />,
