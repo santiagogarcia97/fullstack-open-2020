@@ -70,6 +70,7 @@ const Part = ({part}) => {
 
 const Total = ({parts}) => {
     let total = parts.reduce((sum, part) => sum + part.exercises, 0)
+    
     return (
         <h2>
             <p>Number of exercises {total}</p>
