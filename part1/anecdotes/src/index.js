@@ -5,8 +5,8 @@ const App = (props) => {
     const [selected, setSelected] = useState(0)
     const [votes, setVotes] = useState(Array(anecdotes.length).fill(0))
 
-    console.log(votes)
-    
+    let i = votes.indexOf(Math.max(...votes));
+
     const handleNextClick = () => {
         setSelected(Math.round(Math.random() * (anecdotes.length - 1)))
     }
@@ -19,13 +19,19 @@ const App = (props) => {
 
     return (
         <div>
+            <h1>Anecdote of the day</h1>
             <p>{props.anecdotes[selected]}</p>
             <p>has {votes[selected]} votes</p>
             <button onClick={handleVoteClick}>vote</button>
             <button onClick={handleNextClick}>next</button>
+
+            <h1>Anecdote most voted</h1>
+            <p>{props.anecdotes[i]}</p>
+            <p>has {votes[i]} votes</p>
         </div>
     )
 }
+
 
 const anecdotes = [
     'If it hurts, do it more often',
