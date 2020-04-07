@@ -30,7 +30,7 @@ const App = () => {
     <div>
       <Filter search={search} handleChange={handleChange}/>
 
-      <CountryList countries={filteredCountries}/>
+      <CountryList countries={filteredCountries} handleShowClick={setSearch}/>
     </div>
   );
 }

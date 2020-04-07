@@ -2,7 +2,7 @@ import React from "react";
 
 import CountryDetail from "./CountryDetail";
 
-const CountryList = ({countries}) => {
+const CountryList = ({countries, handleShowClick}) => {
 
   if(countries.length === 1){
     return (
@@ -11,9 +11,17 @@ const CountryList = ({countries}) => {
   }
   else if(countries.length < 10 && countries.length > 1) {
     return (
-      <ul>
-        {countries.map((c) => <li key={c.name}>{c.name}</li> )}
-      </ul>
+      <div>
+        {countries.map( c => {
+          return(
+            <div key={c.name}>{c.name}
+              <button onClick={() => handleShowClick(c.name)}>
+                show
+              </button>
+            </div>
+          )}
+        )}
+      </div>
     )
   }
   else if(countries.length > 10){

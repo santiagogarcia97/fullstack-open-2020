@@ -12,7 +12,7 @@ const CountryDetail = ({country}) => {
         {country.languages.map(lang => <li key={lang.name}>{lang.name}</li>)}
       </ul>
 
-      <img src={country.flag} alt={'flag'}/>
+      <img src={country.flag} alt={'flag'} height={'100px'}/>
     </div>
   )
 }
