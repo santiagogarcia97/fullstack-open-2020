@@ -9,13 +9,19 @@ const App = () => {
   const handleNameChange = (event) => {
       setNewName(event.target.value)
   }
-  
+
   const addName = (event) => {
       event.preventDefault()
-      const newPerson = {
-          name: newName
+
+      if(!persons.find(person => person.name === newName)) {
+          const newPerson = {
+              name: newName
+          }
+          setPersons(persons.concat(newPerson))
       }
-      setPersons(persons.concat(newPerson))
+      else {
+          window.alert(`${newName} is already added`);
+      }
   }
 
   return (
