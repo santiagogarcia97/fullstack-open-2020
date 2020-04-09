@@ -29,8 +29,12 @@ const App = () => {
               name: newName,
               number: newNumber
           };
-          setPersons(persons.concat(newPerson));
-          setSearchName('');
+          axios
+            .post('http://localhost:3001/persons', newPerson)
+            .then( () => {
+              setPersons(persons.concat(newPerson));
+              setSearchName('');
+            })
       }
       else {
           window.alert(`${newName} is already added`);
