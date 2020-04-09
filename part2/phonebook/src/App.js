@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react'
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import PersonList from "./components/PersonList";
+import Notification from "./components/Notification";
 import personService from "./services/persons"
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [ searchName, setSearchName ] = useState('');
+  const [ message, setMessage] = useState(null)
 
   const handleNameChange = (event) => {
       setNewName(event.target.value)
@@ -36,6 +38,10 @@ const App = () => {
         .then(data => {
           setPersons(persons.concat(data));
           setSearchName('');
+          setMessage(
+            `${newName} has been added`)
+          setTimeout(() => {
+            setMessage(null)}, 5000)
         })
     }
     else {
@@ -45,6 +51,10 @@ const App = () => {
           .then(data => {
             setPersons(persons.map(p => p.id === data.id ? data : p));
             setSearchName('');
+            setMessage(
+              `${newName}'s number has been updated`)
+            setTimeout(() => {
+              setMessage(null)}, 5000)
           })
       }
     }
@@ -91,6 +101,8 @@ const App = () => {
           persons={personsFiltered}
           handlePersonDelete={handlePersonDelete}
         />
+
+        <Notification message={message}/>
 
       </div>
   )
