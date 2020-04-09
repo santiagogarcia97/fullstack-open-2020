@@ -22,23 +22,32 @@ const App = () => {
   };
 
   const handleFormSubmit = (event) => {
-      event.preventDefault();
+    event.preventDefault();
 
-      if(!persons.find(person => person.name === newName)) {
-          const newPerson = {
-              name: newName,
-              number: newNumber
-          };
+    let newPerson = persons.find(person => person.name === newName)
 
-          personService.create(newPerson)
-            .then(allPersons => {
-              setPersons(persons.concat(allPersons));
-              setSearchName('');
-            })
+    if(!newPerson) {
+      newPerson = {
+          name: newName,
+          number: newNumber
+        };
+
+      personService.create(newPerson)
+        .then(data => {
+          setPersons(persons.concat(data));
+          setSearchName('');
+        })
+    }
+    else {
+      if(window.confirm(`${newName} is already added, replace the old number with the new one?`)) {
+        newPerson.number = newNumber
+        personService.update(newPerson)
+          .then(data => {
+            setPersons(persons.map(p => p.id === data.id ? data : p));
+            setSearchName('');
+          })
       }
-      else {
-          window.alert(`${newName} is already added`);
-      }
+    }
   };
 
   const handlePersonDelete = (deletePerson) => {
