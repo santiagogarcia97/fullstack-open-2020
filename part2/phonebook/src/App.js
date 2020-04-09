@@ -41,6 +41,17 @@ const App = () => {
       }
   };
 
+  const handlePersonDelete = (deletePerson) => {
+    const confirm = window.confirm(`Delete ${deletePerson.name}?`)
+    if(confirm) {
+      personService.remove(deletePerson)
+        .then(data => {
+          setPersons(persons.filter(p => p.id !== deletePerson.id))
+          setSearchName('')
+        })
+    }
+  }
+
   useEffect(() => {
     personService.getAll()
       .then(allPersons => setPersons(allPersons))
@@ -67,7 +78,10 @@ const App = () => {
 
         <h2>Numbers</h2>
 
-        <PersonList persons={personsFiltered}/>
+        <PersonList
+          persons={personsFiltered}
+          handlePersonDelete={handlePersonDelete}
+        />
 
       </div>
   )
