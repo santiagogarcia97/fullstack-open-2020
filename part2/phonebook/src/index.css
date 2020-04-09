@@ -12,12 +12,20 @@ code {
     monospace;
 }
 
-.error {
-  color: green;
-  background: lightgreen;
+.notify {
   font-size: 20px;
   border-style: solid;
   border-radius: 5px;
   padding: 10px;
   margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  background: lightcoral;
+}
+
+.success {
+  color: green;
+  background: lightgreen;
 }

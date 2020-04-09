@@ -11,7 +11,11 @@ const App = () => {
   const [ newName, setNewName ] = useState('');
   const [ newNumber, setNewNumber ] = useState('');
   const [ searchName, setSearchName ] = useState('');
-  const [ message, setMessage] = useState(null)
+  const [ notification, setNotification] =
+    useState({
+      message: '',
+      isError: false
+    })
 
   const handleNameChange = (event) => {
       setNewName(event.target.value)
@@ -38,10 +42,16 @@ const App = () => {
         .then(data => {
           setPersons(persons.concat(data));
           setSearchName('');
-          setMessage(
-            `${newName} has been added`)
-          setTimeout(() => {
-            setMessage(null)}, 5000)
+          setNotification({
+            message: `${newName} has been added`,
+            isError: false
+          })
+        })
+        .catch(err => {
+          setNotification({
+            message: `there was a problem while trying to add ${newName} to the server. Please refresh the browser`,
+            isError: true
+          })
         })
     }
     else {
@@ -51,13 +61,26 @@ const App = () => {
           .then(data => {
             setPersons(persons.map(p => p.id === data.id ? data : p));
             setSearchName('');
-            setMessage(
-              `${newName}'s number has been updated`)
-            setTimeout(() => {
-              setMessage(null)}, 5000)
+            setNotification({
+              message: `${newName}'s number has been updated`,
+              isError: false
+            })
+          })
+          .catch(err => {
+            setNotification({
+              message: `${newName} has already been deleted from the server. Please refresh the browser`,
+              isError: true
+            })
           })
       }
     }
+
+    setTimeout(() => {
+      setNotification({
+        message: '',
+        isError: false
+      })
+    }, 5000)
   };
 
   const handlePersonDelete = (deletePerson) => {
@@ -67,7 +90,24 @@ const App = () => {
         .then(data => {
           setPersons(persons.filter(p => p.id !== deletePerson.id))
           setSearchName('')
+          setNotification({
+            message: `${deletePerson.name} has been deleted`,
+            isError: false
+          })
         })
+        .catch(err => {
+          setNotification({
+            message: `${deletePerson.name} has already been deleted from the server. Please refresh the browser`,
+            isError: true
+          })
+        })
+
+      setTimeout(() => {
+        setNotification({
+          message: '',
+          isError: false
+        })
+      }, 5000)
     }
   }
 
@@ -102,7 +142,7 @@ const App = () => {
           handlePersonDelete={handlePersonDelete}
         />
 
-        <Notification message={message}/>
+        <Notification notification={notification} />
 
       </div>
   )
