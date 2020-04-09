@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react'
-import axios from 'axios'
 
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import PersonList from "./components/PersonList";
+import personService from "./services/persons"
 
 const App = () => {
   const [ persons, setPersons] = useState([]);
@@ -29,10 +29,10 @@ const App = () => {
               name: newName,
               number: newNumber
           };
-          axios
-            .post('http://localhost:3001/persons', newPerson)
-            .then( () => {
-              setPersons(persons.concat(newPerson));
+
+          personService.create(newPerson)
+            .then(allPersons => {
+              setPersons(persons.concat(allPersons));
               setSearchName('');
             })
       }
@@ -41,17 +41,14 @@ const App = () => {
       }
   };
 
+  useEffect(() => {
+    personService.getAll()
+      .then(allPersons => setPersons(allPersons))
+  }, []);
+
   const personsFiltered = searchName
     ? persons.filter(p => p.name.search(new RegExp(`.*${searchName}.*`, 'ig')) !== -1)
     : persons;
-
-  useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
-  }, []);
 
   return (
       <div>
