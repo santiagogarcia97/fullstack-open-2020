@@ -38,8 +38,8 @@ app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   const person = persons.find(p => p.id === id)
   person ?
-      res.send(person)
-    : res.sendStatus(404)
+    res.send(person) :
+    res.sendStatus(404)
 })
 
 app.delete('/api/persons/:id', (req, res) => {
@@ -49,14 +49,29 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
+  const body = req.body
+
+  if(!body.name){
+    return res.status(400).json({error: 'name is missing'})
+  }
+  if(!body.number){
+    return res.status(400).json({error: 'number is missing'})
+  }
+
   let newPerson = {
-    name: req.body.name,
-    number: req.body.number,
+    name: body.name,
+    number: body.number,
     id: Math.round(Math.random()*99999)
   }
 
-  persons.push(newPerson)
-  res.send(newPerson)
+  if( persons.find(p =>
+    p.name.toUpperCase() === newPerson.name.toUpperCase()) ) {
+    return res.status(400).json({error: `${newPerson.name} already exists in the phonebook`})
+  }
+  else{
+    persons.push(newPerson)
+    res.send(newPerson)
+  }
 })
 
 const PORT = 3001
