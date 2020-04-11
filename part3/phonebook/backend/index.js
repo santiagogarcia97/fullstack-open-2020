@@ -2,9 +2,6 @@ const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 
-const app = express()
-app.use(cors())
-
 let persons = [
   {
     name: 'Arto Hellas',
@@ -27,6 +24,10 @@ let persons = [
     id: 4
   }
 ]
+
+const app = express()
+app.use(cors())
+app.use(express.static('build'))
 
 morgan.token("content", req => {
   if (!req.body) return "";
