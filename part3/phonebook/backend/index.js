@@ -1,6 +1,13 @@
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+require('dotenv').config()
+const Person = require('./models/person')
+
+morgan.token("content", req => {
+  if (!req.body) return "";
+  return JSON.stringify(req.body);
+});
 
 let persons = [
   {
@@ -27,18 +34,14 @@ let persons = [
 
 const app = express()
 app.use(cors())
-app.use(express.static('build'))
-
-morgan.token("content", req => {
-  if (!req.body) return "";
-  return JSON.stringify(req.body);
-});
-
 app.use(express.json())
+app.use(express.static('build'))
 app.use(morgan(":method :url :status :res[content-length] - :response-time ms :content"))
 
 app.get('/api/persons', (req, res) => {
-  res.send(persons)
+  Person.find({}).then(persons => {
+    res.json(persons.map(p => p.toJSON()))
+  })
 })
 
 app.get('/info', (req, res) => {
