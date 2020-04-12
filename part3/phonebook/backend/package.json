@@ -7,6 +7,7 @@
     "start": "node index.js",
     "dev": "nodemon index.js",
     "publishheroku": "cd ../../../ && git subtree push --prefix part3/phonebook/backend heroku-phonebook master || true",
+    "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Santiago Garcia",
@@ -20,6 +21,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
     "nodemon": "^2.0.3"
   }
 }
