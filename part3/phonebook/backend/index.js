@@ -66,27 +66,20 @@ app.delete('/api/persons/:id', (req, res) => {
 app.post('/api/persons', (req, res) => {
   const body = req.body
 
-  if(!body.name){
+  if(!body.name)
     return res.status(400).json({error: 'name is missing'})
-  }
-  if(!body.number){
+
+  if(!body.number)
     return res.status(400).json({error: 'number is missing'})
-  }
 
-  let newPerson = {
+  const newPerson = new Person({
     name: body.name,
-    number: body.number,
-    id: Math.round(Math.random()*99999)
-  }
+    number: body.number
+  })
 
-  if( persons.find(p =>
-    p.name.toUpperCase() === newPerson.name.toUpperCase()) ) {
-    return res.status(400).json({error: `${newPerson.name} already exists in the phonebook`})
-  }
-  else{
-    persons.push(newPerson)
-    res.send(newPerson)
-  }
+  newPerson.save().then(savedPerson => {
+    res.json(savedPerson.toJSON())
+  })
 })
 
 const PORT = process.env.PORT || 3001
