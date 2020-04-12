@@ -17,7 +17,7 @@ Partners and affiliates of the course include Houston Inc, Terveystalo, Elisa, K
 Participants are expected to have good programming skills, basic knowledge of web programming and databases, and to know the basics of working with the Git version-control system. You are also expected to have perseverance and the ability for independent problem solving and information seeking.
 
 ## Links
-# Phonebook app from part 3:
+### Phonebook app from part 3:
 https://phonebook-fs20.herokuapp.com/
 
 ## Exercises done
@@ -27,7 +27,7 @@ https://phonebook-fs20.herokuapp.com/
 | 0     | 6/6     |
 | 1     | 14/14   |
 | 2     | 20/20   |
-| 3     | 11/20   |
+| 3     | 22/22   |
 
 ## Course material
 ### Part 0: Fundamentals of Web apps
