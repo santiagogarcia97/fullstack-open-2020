@@ -45,17 +45,23 @@ app.get('/api/persons', (req, res, next) => {
   .catch(error => next(error))
 })
 
-app.get('/info', (req, res) => {
-  res.send(
-    `<p>Phonebook has info for ${persons.length} people</p><p>${Date()}</p>`)
-})
+app.get("/info", (req, res) => {
+  Person.count({}).then(personsLength => {
+    res.send(
+      `<p>Phonebook has info for ${personsLength} people</p><p>${Date()}</p>`)
+  });
+});
 
-app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(p => p.id === id)
-  person ?
-    res.send(person) :
-    res.sendStatus(404)
+app.get('/api/persons/:id', (req, res, next) => {
+  Person.findById(req.params.id)
+    .then(person => {
+      if (person) {
+        res.json(person.toJSON())
+      } else {
+        res.status(404).end()
+      }
+    })
+    .catch(error => next(error))
 })
 
 app.put('/api/persons/:id', (req, res, next) => {
@@ -113,8 +119,8 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-  //console.error(error.message)
-  if (error.name === 'CastError' && error.kind === 'ObjectId') {
+  console.error(error.message, error.name, error.kind)
+  if (error.name === 'CastError' || error.kind === 'ObjectId') {
     return response.status(400).send({ error: 'malformatted id' })
   }
   next(error)
