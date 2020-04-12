@@ -49,7 +49,7 @@ const App = () => {
         })
         .catch(err => {
           setNotification({
-            message: `there was a problem while trying to add ${newName} to the server. Please refresh the browser`,
+            message: err.response.data.message,
             isError: true
           })
         })
@@ -68,7 +68,7 @@ const App = () => {
           })
           .catch(err => {
             setNotification({
-              message: `${newName} has already been deleted from the server. Please refresh the browser`,
+              message: err.response.data.message,
               isError: true
             })
           })
