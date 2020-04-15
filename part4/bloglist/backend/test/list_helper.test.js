@@ -99,18 +99,35 @@ describe("favorite blog", () => {
 })
 
 describe('mostBlogs', () => {
-  test('on list with 1 blog', () => {
+  test('from list with 1 blog', () => {
     const result = listHelper.mostBlogs(listWithMultipleBlogs)
     expect(result).toEqual({ author: "Edsger W. Dijkstra", blogs: 3 })
   })
 
-  test('on list with multiple blogs', () => {
+  test('from list with multiple blogs', () => {
     const result = listHelper.mostBlogs(listWithOneBlog)
     expect(result).toEqual({ author: "Edsger W. Dijkstra", blogs: 1 })
   })
 
-  test('on empty list, return undefined', () => {
+  test('from empty list, return null', () => {
     const result = listHelper.mostBlogs([])
+    expect(result).toBeNull()
+  })
+})
+
+describe('mostLikes', () => {
+  test('from list with 1 blog', () => {
+    const result = listHelper.mostLikes(listWithOneBlog)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 5 })
+  })
+
+  test('from list with multiple blogs', () => {
+    const result = listHelper.mostLikes(listWithMultipleBlogs)
+    expect(result).toEqual({ author: 'Edsger W. Dijkstra', likes: 17 })
+  })
+
+  test('from empty list, return null', () => {
+    const result = listHelper.mostLikes([])
     expect(result).toBeNull()
   })
 })
