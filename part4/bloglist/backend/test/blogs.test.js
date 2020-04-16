@@ -30,6 +30,9 @@ const newBlog = {
   author: "Author 3",
   url: "https://www.asd.com"
 }
+const blogWithoutTitleAndUrl = {
+  author: "Author 3"
+}
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -66,9 +69,17 @@ describe("saving a blog", () => {
     expect(res.body).toContainEqual(expect.objectContaining(newBlog))
   })
 
-  test("on a saved blog if no likes are present they default to 0", async () => {
+  test("on a saved blog if no likes are present default to 0", async () => {
     const savedBlog = await api.post("/api/blogs").send(newBlog)
     expect(savedBlog.body).toHaveProperty("likes", 0)
+  })
+
+
+  test("get a 400 response when the title or url is missing from the request", async () => {
+    await api
+      .post("/api/blogs")
+      .send(blogWithoutTitleAndUrl)
+      .expect(400)
   })
 })
 
