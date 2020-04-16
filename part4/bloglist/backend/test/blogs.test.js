@@ -25,6 +25,11 @@ const initialBlogs = [
     likes: 13
   }
 ]
+const newBlog = {
+  title: "Title 3",
+  author: "Author 3",
+  url: "https://www.asd.com"
+}
 
 beforeEach(async () => {
   await Blog.deleteMany({})
@@ -54,21 +59,16 @@ describe("retriving blogs", () => {
 
 describe("saving a blog", () => {
   test("blog is saved correctly in db", async () => {
-    const newBlog = {
-      title: "Title 3",
-      author: "Author 3",
-      url: "https://www.asd.com"
-    }
-
-    await api
-      .post("/api/blogs")
-      .send(newBlog)
-      .expect(201)
-
+    await api.post("/api/blogs").send(newBlog).expect(201)
     const res = await api.get("/api/blogs")
 
     expect(res.body.length).toBe(initialBlogs.length + 1)
     expect(res.body).toContainEqual(expect.objectContaining(newBlog))
+  })
+
+  test("on a saved blog if no likes are present they default to 0", async () => {
+    const savedBlog = await api.post("/api/blogs").send(newBlog)
+    expect(savedBlog.body).toHaveProperty("likes", 0)
   })
 })
 
