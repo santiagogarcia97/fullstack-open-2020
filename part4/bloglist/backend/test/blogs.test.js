@@ -42,14 +42,34 @@ describe("retriving blogs", () => {
   })
 
   test("request returns the correct amount of blogs", async () => {
-    const blogs = await api.get("/api/blogs");
+    const blogs = await api.get("/api/blogs")
     expect(blogs.body.length).toBe(3)
   })
 
   test("blogs have an id property", async () => {
-    const blogs = await api.get("/api/blogs");
-    expect(blogs.body[0].id).toBeDefined();
-  });
+    const blogs = await api.get("/api/blogs")
+    expect(blogs.body[0].id).toBeDefined()
+  })
+})
+
+describe("saving a blog", () => {
+  test("blog is saved correctly in db", async () => {
+    const newBlog = {
+      title: "Title 3",
+      author: "Author 3",
+      url: "https://www.asd.com"
+    }
+
+    await api
+      .post("/api/blogs")
+      .send(newBlog)
+      .expect(201)
+
+    const res = await api.get("/api/blogs")
+
+    expect(res.body.length).toBe(initialBlogs.length + 1)
+    expect(res.body).toContainEqual(expect.objectContaining(newBlog))
+  })
 })
 
 afterAll(() => {
