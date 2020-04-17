@@ -101,6 +101,27 @@ describe("deleting a blog", () => {
   })
 })
 
+describe("updating a blog", () => {
+  test("updating a blog with a malformated id returns 400", async () => {
+    await api
+      .put(`/api/blogs/malformatedid`)
+      .send()
+      .expect(400)
+  })
+
+  test("updating a blog correctly", async () => {
+    const blogs = await api.get("/api/blogs")
+    const id = blogs.body[0].id
+
+    const blogUpdate = {likes: 50}
+
+    const updatedBlog = await api.put(`/api/blogs/${id}`).send(blogUpdate)
+
+    expect(updatedBlog.body).toHaveProperty("id", id)
+    expect(updatedBlog.body).toHaveProperty("likes", blogUpdate.likes)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
