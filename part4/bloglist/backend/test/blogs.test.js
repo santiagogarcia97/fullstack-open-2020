@@ -83,6 +83,24 @@ describe("saving a blog", () => {
   })
 })
 
+describe("deleting a blog", () => {
+  test("blog is deleted correctly in db", async () => {
+    const savedBlog = await api.post("/api/blogs").send(newBlog).expect(201)
+
+    await api
+      .delete(`/api/blogs/${savedBlog.body.id}`)
+      .send()
+      .expect(204)
+  })
+
+  test("get a 400 response when malformated id", async () => {
+    await api
+      .delete(`/api/blogs/malformatedid`)
+      .send()
+      .expect(400)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
