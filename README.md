@@ -28,6 +28,7 @@ https://phonebook-fs20.herokuapp.com/
 | 1     | 14/14   |
 | 2     | 20/20   |
 | 3     | 22/22   |
+| 4     | 22/22   |
 
 ## Course material
 ### Part 0: Fundamentals of Web apps
@@ -49,4 +50,9 @@ https://phonebook-fs20.herokuapp.com/
 * Deploying app to internet
 * Saving data to MongoDB
 * Validation and ESLint
+### Part 4: Testing Express servers, user administration
+* Structure of backend application, introduction to testing
+* Testing the backend
+* User administration
+* Token authentication
 
