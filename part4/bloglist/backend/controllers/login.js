@@ -6,6 +6,8 @@ const config = require('../utils/config')
 
 loginRouter.post('/', async (req, res) => {
   const body = req.body
+  if(!body.username || !body.password)
+    return res.status(400).send({error: 'missing information'})
 
   const user = await User.findOne({ username: body.username })
   const passwordCorrect = user === null
