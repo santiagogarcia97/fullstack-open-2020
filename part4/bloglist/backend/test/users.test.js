@@ -58,6 +58,74 @@ describe('when there is initially one user at db', () => {
   })
 })
 
+describe('check create user validations', () => {
+  beforeEach(async () => {
+    await User.deleteMany({})
+
+    const passwordHash = await bcrypt.hash('sekret', 10)
+    const user = new User({ username: 'root', passwordHash })
+
+    await user.save()
+  })
+
+  test('users cant be created without username', async () => {
+    const newUser = {
+      password: "asdasd",
+      name: "qeqwe"
+    }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+
+  test('users cant be created without password', async () => {
+    const newUser = {
+      username: "asdasd",
+      name: "qeqwe"
+    }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+
+  test('users cant be created with less than 3 chars username', async () => {
+    const newUser = {
+      username: "as",
+      password: "asdasd",
+      name: "qeqwe"
+    }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+
+  test('users cant be created with less than 3 chars password', async () => {
+    const newUser = {
+      username: "asasaf",
+      password: "a",
+      name: "qeqwe"
+    }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+  test('username cant be repeated', async () => {
+    const newUser = {
+      username: "root",
+      password: "asadasd",
+      name: "qeqwe"
+    }
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(400)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
