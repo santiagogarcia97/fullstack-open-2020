@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from 'react'
+import "./App.css";
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import AddBlog from './components/AddBlog'
+import Notification from './components/Notification'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [successMessage, setSuccessMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState("")
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -24,8 +28,12 @@ const App = () => {
       setUsername('')
       setPassword('')
       blogService.setToken(user.token)
-    } catch (exception) {
-      console.log(exception.message)
+    } catch (ex) {
+      console.log(ex.message)
+      setErrorMessage(ex.response.data.error)
+      setTimeout(() => {
+        setErrorMessage("")
+      }, 5000)
     }
   }
 
@@ -41,8 +49,17 @@ const App = () => {
     try {
       const blog = await blogService.create(newBlog)
       console.log(blog)
-    } catch (err) {
-      console.log(err.response)
+      setBlogs(blogs.concat(blog))
+      setSuccessMessage(`a new blog ${blog.title} by ${blog.author} was added`)
+      setTimeout(() => {
+        setSuccessMessage("")
+      }, 5000)
+    } catch (ex) {
+      console.log(ex.response)
+      setErrorMessage(ex.response.data.error)
+      setTimeout(() => {
+        setErrorMessage("")
+      }, 5000)
     }
   }
 
@@ -99,6 +116,8 @@ const App = () => {
   return(
     <div>
       <h1>Blogs</h1>
+      {errorMessage && <Notification text={errorMessage} isError />}
+      {successMessage && <Notification text={successMessage} />}
       {user === null && loginForm()}
       {user !== null && blogList()}
     </div>
