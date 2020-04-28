@@ -3,7 +3,7 @@ import "./App.css";
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
-import AddBlog from './components/AddBlog'
+import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
 import Togglable from './components/Togglable';
 
@@ -85,19 +85,23 @@ const App = () => {
     <div>
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
-        <div>username
-          <input type='text'
-                 value={username}
-                 name='Username'
-                 onChange={({ target }) => setUsername(target.value)}/>
-        </div>
-        <div>password
-          <input type='password'
-                 value={password}
-                 name='Password'
-                 onChange={({ target }) => setPassword(target.value)}/>
-        </div>
-        <button type='submit'>login</button>
+        <table>
+          <tr>
+            <td>Username</td>
+            <td>
+              <input type='text' value={username} name='Username'
+                     onChange={({ target }) => setUsername(target.value)}/>
+            </td>
+          </tr>
+          <tr>
+            <td>Password</td>
+            <td>
+              <input type='password' value={password} name='Password'
+                     onChange={({ target }) => setPassword(target.value)}/>
+            </td>
+          </tr>
+        </table>
+        <button type='submit'>Login</button>
       </form>
     </div>
   )
@@ -108,8 +112,8 @@ const App = () => {
         <button onClick={handleLogout}>Logout</button>
       </p>
       <p>
-        <Togglable buttonLabel='new blog' ref={blogFormRef}>
-          <AddBlog onBlogAdded={handleBlogAdded} />
+        <Togglable buttonLabel='New Blog' ref={blogFormRef}>
+          <BlogForm onBlogAdded={handleBlogAdded} />
         </Togglable>
       </p>
       {blogs.map(blog =>
