@@ -74,7 +74,7 @@ const App = () => {
 
       const updatedBlogs = blogs
       updatedBlogs[updatedBlogs.findIndex(b => b.id === blog.id)].likes = blog.likes
-      setBlogs(updatedBlogs)
+      setBlogs(sortBlogs(updatedBlogs))
 
       setSuccessMessage(`Likes of blog "${blog.title}" were updated`)
       setTimeout(() => {
@@ -89,10 +89,16 @@ const App = () => {
     }
   }
 
+  const sortBlogs = (unsortedList) => {
+    const sortedList = unsortedList
+    sortedList.sort((a, b) => {return b.likes - a.likes})
+    return sortedList
+  }
+
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
+    blogService.getAll().then( b => {
+      setBlogs(sortBlogs(b))
+    })
   }, [])
 
   useEffect(() => {
