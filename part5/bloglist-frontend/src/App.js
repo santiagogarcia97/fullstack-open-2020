@@ -53,7 +53,30 @@ const App = () => {
       const blog = await blogService.create(newBlog)
       console.log(blog)
       setBlogs(blogs.concat(blog))
-      setSuccessMessage(`a new blog ${blog.title} by ${blog.author} was added`)
+      setSuccessMessage(`A new blog "${blog.title}" by "${blog.author}" was added`)
+      setTimeout(() => {
+        setSuccessMessage('')
+      }, 5000)
+    } catch (ex) {
+      console.log(ex.response)
+      setErrorMessage(ex.response.data.error)
+      setTimeout(() => {
+        setErrorMessage('')
+      }, 5000)
+    }
+  }
+
+  const updateLikes = async blog => {
+    try {
+      blog.likes = blog.likes + 1
+      const res = await blogService.update(blog)
+      console.log(res)
+
+      const updatedBlogs = blogs
+      updatedBlogs[updatedBlogs.findIndex(b => b.id === blog.id)].likes = blog.likes
+      setBlogs(updatedBlogs)
+
+      setSuccessMessage(`Likes of blog "${blog.title}" were updated`)
       setTimeout(() => {
         setSuccessMessage('')
       }, 5000)
@@ -86,6 +109,7 @@ const App = () => {
       <h2>Login</h2>
       <form onSubmit={handleLogin}>
         <table>
+          <tbody>
           <tr>
             <td>Username</td>
             <td>
@@ -100,6 +124,7 @@ const App = () => {
                      onChange={({ target }) => setPassword(target.value)}/>
             </td>
           </tr>
+          </tbody>
         </table>
         <button type='submit'>Login</button>
       </form>
@@ -111,13 +136,11 @@ const App = () => {
         {user.name} logged in
         <button onClick={handleLogout}>Logout</button>
       </p>
-      <p>
-        <Togglable buttonLabel='New Blog' ref={blogFormRef}>
-          <BlogForm onBlogAdded={handleBlogAdded} />
-        </Togglable>
-      </p>
+      <Togglable buttonLabel='New Blog' ref={blogFormRef}>
+        <BlogForm onBlogAdded={handleBlogAdded} />
+      </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} updateLikes={updateLikes} />
       )}
     </div>
   )

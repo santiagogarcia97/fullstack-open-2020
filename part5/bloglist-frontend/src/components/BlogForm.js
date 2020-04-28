@@ -13,6 +13,7 @@ const BlogForm = ({ onBlogAdded }) => {
   return (
     <form onSubmit={handleNewBlogSubmit}>
       <table>
+        <tbody>
         <tr>
           <td>Title</td>
           <td>
@@ -34,6 +35,7 @@ const BlogForm = ({ onBlogAdded }) => {
                    onChange={e => setUrl(e.target.value)}/>
           </td>
         </tr>
+        </tbody>
       </table>
       <button type="submit">Create</button>
     </form>
