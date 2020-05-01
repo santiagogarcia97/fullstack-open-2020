@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import "./App.css";
+import './App.css'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import BlogForm from './components/BlogForm'
 import Notification from './components/Notification'
-import Togglable from './components/Togglable';
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -33,12 +33,12 @@ const App = () => {
       console.log(ex.message)
       setErrorMessage(ex.response.data.error)
       setTimeout(() => {
-        setErrorMessage("")
+        setErrorMessage('')
       }, 5000)
     }
   }
 
-  const handleLogout = async (event) => {
+  const handleLogout = async () => {
     window.localStorage.removeItem('loggedBlogUser')
     setUser(null)
     setUsername('')
@@ -52,7 +52,7 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
       const blog = await blogService.create(newBlog)
       console.log(blog)
-      blog.user = {username: user.username}
+      blog.user = { username: user.username }
       setBlogs(blogs.concat(blog))
       setSuccessMessage(`A new blog "${blog.title}" by "${blog.author}" was added`)
       setTimeout(() => {
@@ -140,20 +140,20 @@ const App = () => {
       <form onSubmit={handleLogin}>
         <table>
           <tbody>
-          <tr>
-            <td>Username</td>
-            <td>
-              <input type='text' value={username} name='Username'
-                     onChange={({ target }) => setUsername(target.value)}/>
-            </td>
-          </tr>
-          <tr>
-            <td>Password</td>
-            <td>
-              <input type='password' value={password} name='Password'
-                     onChange={({ target }) => setPassword(target.value)}/>
-            </td>
-          </tr>
+            <tr>
+              <td>Username</td>
+              <td>
+                <input type='text' value={username} name='Username'
+                  onChange={({ target }) => setUsername(target.value)}/>
+              </td>
+            </tr>
+            <tr>
+              <td>Password</td>
+              <td>
+                <input type='password' value={password} name='Password'
+                  onChange={({ target }) => setPassword(target.value)}/>
+              </td>
+            </tr>
           </tbody>
         </table>
         <button type='submit'>Login</button>

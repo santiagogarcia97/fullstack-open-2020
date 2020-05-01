@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
   const [showInfo, setShowInfo] = useState(false)
@@ -25,33 +25,33 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
   }
 
   return (
-  <div style={blogStyle}>
-    <p>
-      {blog.title}
-      <button onClick={handleShowInfo}>{showInfo ? 'hide' : 'view'}</button>
-    </p>
-    {showInfo ? (
-      <div>
-        <p>
-          <a href={blog.url}>{blog.url}</a>
-        </p>
-        <p>
-          Likes: {blog.likes} <button onClick={handleLikeClick}>Like</button>
-        </p>
-        <p>
-          {blog.author}
-        </p>
-        {blog.user.username === user.username ? (
+    <div style={blogStyle}>
+      <p>
+        {blog.title}
+        <button onClick={handleShowInfo}>{showInfo ? 'hide' : 'view'}</button>
+      </p>
+      {showInfo ? (
+        <div>
           <p>
-            <button onClick={handleDeleteClick}>Delete</button>
+            <a href={blog.url}>{blog.url}</a>
           </p>
-        )
-          : null
-        }
-      </div>
-    )
-      : null}
-  </div>
-)}
+          <p>
+          Likes: {blog.likes} <button onClick={handleLikeClick}>Like</button>
+          </p>
+          <p>
+            {blog.author}
+          </p>
+          {blog.user.username === user.username ? (
+            <p>
+              <button onClick={handleDeleteClick}>Delete</button>
+            </p>
+          )
+            : null
+          }
+        </div>
+      )
+        : null}
+    </div>
+  )}
 
 export default Blog
