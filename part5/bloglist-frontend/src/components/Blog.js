@@ -30,6 +30,9 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
         {blog.title}
         <button onClick={handleShowInfo}>{showInfo ? 'hide' : 'view'}</button>
       </p>
+      <p>
+        {blog.author}
+      </p>
       {showInfo ? (
         <div>
           <p>
@@ -37,9 +40,6 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
           </p>
           <p>
           Likes: {blog.likes} <button onClick={handleLikeClick}>Like</button>
-          </p>
-          <p>
-            {blog.author}
           </p>
           {blog.user.username === user.username ? (
             <p>
