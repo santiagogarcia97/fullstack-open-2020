@@ -52,6 +52,7 @@ const App = () => {
       blogFormRef.current.toggleVisibility()
       const blog = await blogService.create(newBlog)
       console.log(blog)
+      blog.user = {username: user.username}
       setBlogs(blogs.concat(blog))
       setSuccessMessage(`A new blog "${blog.title}" by "${blog.author}" was added`)
       setTimeout(() => {
@@ -77,6 +78,29 @@ const App = () => {
       setBlogs(sortBlogs(updatedBlogs))
 
       setSuccessMessage(`Likes of blog "${blog.title}" were updated`)
+      setTimeout(() => {
+        setSuccessMessage('')
+      }, 5000)
+    } catch (ex) {
+      console.log(ex.response)
+      setErrorMessage(ex.response.data.error)
+      setTimeout(() => {
+        setErrorMessage('')
+      }, 5000)
+    }
+  }
+
+  const deleteBlog = async blog => {
+    try {
+      const res = await blogService.remove(blog)
+      console.log(res)
+
+      const updatedBlogs = blogs.filter(b => {
+        return b.id !== blog.id
+      })
+      setBlogs(sortBlogs(updatedBlogs))
+
+      setSuccessMessage(`"${blog.title}" was removed succesfully`)
       setTimeout(() => {
         setSuccessMessage('')
       }, 5000)
@@ -139,14 +163,14 @@ const App = () => {
   const blogList = () => (
     <div>
       <p>
-        {user.name} logged in
+        <strong>{user.name}</strong> logged in
         <button onClick={handleLogout}>Logout</button>
       </p>
       <Togglable buttonLabel='New Blog' ref={blogFormRef}>
         <BlogForm onBlogAdded={handleBlogAdded} />
       </Togglable>
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} updateLikes={updateLikes} />
+        <Blog key={blog.id} blog={blog} updateLikes={updateLikes} deleteBlog={deleteBlog} user={user}/>
       )}
     </div>
   )
