@@ -83,6 +83,27 @@ describe('Blog app', function() {
         cy.contains('view').should('not.exist')
       })
     })
+    describe('and many blogs exist', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Title1',
+          author: 'Author1',
+          url: 'url1.com',
+          likes: 8
+        })
+        cy.createBlog({
+          title: 'Title2',
+          author: 'Author2',
+          url: 'url2.com',
+          likes: 11
+        })
+      })
 
+      it('are shown in correct order', function () {
+        cy.contains('view').click()
+        cy.contains('Likes')
+          .parent().contains('11')
+      })
+    })
   })
 })
