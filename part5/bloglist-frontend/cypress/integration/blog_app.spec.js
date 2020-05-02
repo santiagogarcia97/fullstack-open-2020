@@ -55,7 +55,7 @@ describe('Blog app', function() {
         .parent().contains('TitleTest')
     })
 
-    describe.only('and a blog exists', function () {
+    describe('and a blog exists', function () {
       beforeEach(function () {
         cy.createBlog({
           title: 'Title1',
@@ -73,6 +73,16 @@ describe('Blog app', function() {
         cy.contains('Likes')
           .parent().contains('1')
       })
+
+      it('it can be deleted', function () {
+        cy.contains('view').click()
+        cy.contains('Delete').click()
+        cy.get('.notification')
+          .should('contain', '"Title1" was removed succesfully')
+          .and('have.css', 'color', 'rgb(0, 128, 0)')
+        cy.contains('view').should('not.exist')
+      })
     })
+
   })
 })
