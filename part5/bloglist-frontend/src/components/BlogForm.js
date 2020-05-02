@@ -8,6 +8,9 @@ const BlogForm = ({ onBlogAdded }) => {
   const handleNewBlogSubmit = event => {
     event.preventDefault()
     onBlogAdded({ title, author, url })
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   return (
