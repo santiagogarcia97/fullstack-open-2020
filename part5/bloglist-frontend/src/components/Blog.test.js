@@ -29,12 +29,27 @@ describe('testing Blog component', () => {
     const component = render(
       <Blog blog={blog} user={user}></Blog>
     )
-    component.debug()
 
     const button = component.getByText('view')
     fireEvent.click(button)
 
     expect(component.container).toHaveTextContent('Test url')
     expect(component.container).toHaveTextContent('10')
+  })
+  test('like button clicked twice', () => {
+    const mockHandler = jest.fn()
+    const component = render(
+      <Blog blog={blog} user={user} updateLikes={mockHandler}></Blog>
+    )
+    component.debug()
+    const viewButton = component.getByText('view')
+    fireEvent.click(viewButton)
+    const likeButton = component.getByText('Like')
+    fireEvent.click(likeButton)
+    fireEvent.click(likeButton)
+
+    expect(component.container).toHaveTextContent('Test url')
+    expect(component.container).toHaveTextContent('10')
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })
