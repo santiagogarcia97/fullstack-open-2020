@@ -143,20 +143,20 @@ const App = () => {
             <tr>
               <td>Username</td>
               <td>
-                <input type='text' value={username} name='Username'
+                <input type='text' value={username} name='Username' id='username'
                   onChange={({ target }) => setUsername(target.value)}/>
               </td>
             </tr>
             <tr>
               <td>Password</td>
               <td>
-                <input type='password' value={password} name='Password'
+                <input type='password' value={password} name='Password' id='password'
                   onChange={({ target }) => setPassword(target.value)}/>
               </td>
             </tr>
           </tbody>
         </table>
-        <button type='submit'>Login</button>
+        <button id='login-button' type='submit'>Login</button>
       </form>
     </div>
   )
