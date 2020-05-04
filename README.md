@@ -29,6 +29,8 @@ https://phonebook-fs20.herokuapp.com/
 | 2     | 20/20   |
 | 3     | 22/22   |
 | 4     | 22/22   |
+| 5     | 22/22   |
+| 6     | 21/21   |
 
 ## Course material
 ### Part 0: Fundamentals of Web apps
@@ -55,4 +57,13 @@ https://phonebook-fs20.herokuapp.com/
 * Testing the backend
 * User administration
 * Token authentication
-
+### Part 5: Testing React apps
+* Login in frontend
+* props.children and proptypes
+* Testing React apps
+* End to End Testing
+### Part 6: State management with Redux
+* Flux-architecture and Redux
+* Many reducers
+* Communicating with server in a redux app
+* connect
