@@ -16,6 +16,12 @@ const CreateNew = (props) => {
       votes: 0
     })
   }
+  const handleReset = (e) => {
+    e.preventDefault()
+    content.reset()
+    author.reset()
+    info.reset()
+  }
 
   return (
     <div>
@@ -38,6 +44,7 @@ const CreateNew = (props) => {
           </tbody>
         </table>
         <button type='submit'>Create</button>
+        <button onClick={handleReset}>Reset</button>
       </form>
     </div>
   )
