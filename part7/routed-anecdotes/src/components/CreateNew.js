@@ -10,9 +10,9 @@ const CreateNew = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault()
     props.addNew({
-      content: content.value,
-      author: author.value,
-      info: info.value,
+      content: content.input.value,
+      author: author.input.value,
+      info: info.input.value,
       votes: 0
     })
   }
@@ -31,15 +31,15 @@ const CreateNew = (props) => {
           <tbody>
           <tr>
             <td>Content</td>
-            <td><input {...content} /></td>
+            <td><input {...content.input} /></td>
           </tr>
           <tr>
             <td>Author</td>
-            <td><input {...author} /></td>
+            <td><input {...author.input} /></td>
           </tr>
           <tr>
             <td>URL for more info</td>
-            <td><input {...info} /></td>
+            <td><input {...info.input} /></td>
           </tr>
           </tbody>
         </table>
