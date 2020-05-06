@@ -1,18 +1,19 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
+import { useDispatch } from 'react-redux'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
+import { setNotification } from './reducers/notificationReducer'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [successMessage, setSuccessMessage] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const dispatch = useDispatch()
 
   const handleLogin = async (event) => {
     event.preventDefault()
@@ -29,11 +30,7 @@ const App = () => {
       setPassword('')
       blogService.setToken(user.token)
     } catch (ex) {
-      console.log(ex.message)
-      setErrorMessage(ex.response.data.error)
-      setTimeout(() => {
-        setErrorMessage('')
-      }, 5000)
+      dispatch(setNotification(ex.response.data.error, 3, true))
     }
   }
 
@@ -50,65 +47,42 @@ const App = () => {
     try {
       blogFormRef.current.toggleVisibility()
       const blog = await blogService.create(newBlog)
-      console.log(blog)
+
       blog.user = { username: user.username }
       setBlogs(blogs.concat(blog))
-      setSuccessMessage(`A new blog "${blog.title}" by "${blog.author}" was added`)
-      setTimeout(() => {
-        setSuccessMessage('')
-      }, 5000)
+      dispatch(setNotification(`A new blog "${blog.title}" by "${blog.author}" was added`, 3))
     } catch (ex) {
-      console.log(ex.response)
-      setErrorMessage(ex.response.data.error)
-      setTimeout(() => {
-        setErrorMessage('')
-      }, 5000)
+      dispatch(setNotification(ex.response.data.error, 3, true))
     }
   }
 
   const updateLikes = async blog => {
     try {
       blog.likes = blog.likes + 1
-      const res = await blogService.update(blog)
-      console.log(res)
+      await blogService.update(blog)
 
       const updatedBlogs = blogs
       updatedBlogs[updatedBlogs.findIndex(b => b.id === blog.id)].likes = blog.likes
       setBlogs(sortBlogs(updatedBlogs))
 
-      setSuccessMessage(`Likes of blog "${blog.title}" were updated`)
-      setTimeout(() => {
-        setSuccessMessage('')
-      }, 5000)
+      dispatch(setNotification(`Likes of blog "${blog.title}" were updated`, 3))
     } catch (ex) {
-      console.log(ex.response)
-      setErrorMessage(ex.response.data.error)
-      setTimeout(() => {
-        setErrorMessage('')
-      }, 5000)
+      dispatch(setNotification(ex.response.data.error, 3, true))
     }
   }
 
   const deleteBlog = async blog => {
     try {
-      const res = await blogService.remove(blog)
-      console.log(res)
+      await blogService.remove(blog)
 
       const updatedBlogs = blogs.filter(b => {
         return b.id !== blog.id
       })
       setBlogs(sortBlogs(updatedBlogs))
 
-      setSuccessMessage(`"${blog.title}" was removed succesfully`)
-      setTimeout(() => {
-        setSuccessMessage('')
-      }, 5000)
+      dispatch(setNotification(`"${blog.title}" was removed succesfully`, 3))
     } catch (ex) {
-      console.log(ex.response)
-      setErrorMessage(ex.response.data.error)
-      setTimeout(() => {
-        setErrorMessage('')
-      }, 5000)
+      dispatch(setNotification(ex.response.data.error, 3, true))
     }
   }
 
@@ -136,8 +110,7 @@ const App = () => {
   return(
     <div>
       <h1>Blogs</h1>
-      {errorMessage && <Notification text={errorMessage} isError />}
-      {successMessage && <Notification text={successMessage} />}
+      <Notification/>
       { !user
         ? <LoginForm handleLogin={handleLogin} username={username} setUsername={setUsername}
           password={password} setPassword={setPassword}/>
