@@ -6,7 +6,7 @@ import { useField } from '../hooks'
 
 const LoginForm = () => {
   const username = useField('text')
-  const password = useField('text')
+  const password = useField('password')
   const user = useSelector(({ user }) => user)
   const dispatch = useDispatch()
 
