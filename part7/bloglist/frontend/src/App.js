@@ -7,7 +7,7 @@ import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import { setNotification } from './reducers/notificationReducer'
-import {addBlog, initBlogs} from './reducers/blogReducer'
+import {addBlog, initBlogs, likeBlog, deleteBlog} from './reducers/blogReducer'
 
 const App = () => {
   const blogs = useSelector(({ blogs }) => blogs)
@@ -48,7 +48,7 @@ const App = () => {
     try {
       blogFormRef.current.toggleVisibility()
       newBlog.user = { username: user.username }
-      dispatch(addBlog(newBlog))
+      await dispatch(addBlog(newBlog))
       dispatch(setNotification(`A new blog "${newBlog.title}" by "${newBlog.author}" was added`, 3))
     } catch (ex) {
       dispatch(setNotification(ex.response.data.error, 3, true))
@@ -57,38 +57,20 @@ const App = () => {
 
   const updateLikes = async blog => {
     try {
-      blog.likes = blog.likes + 1
-      await blogService.update(blog)
-
-      const updatedBlogs = blogs
-      updatedBlogs[updatedBlogs.findIndex(b => b.id === blog.id)].likes = blog.likes
-      //setBlogs(sortBlogs(updatedBlogs))
-
+      await dispatch(likeBlog(blog))
       dispatch(setNotification(`Likes of blog "${blog.title}" were updated`, 3))
     } catch (ex) {
       dispatch(setNotification(ex.response.data.error, 3, true))
     }
   }
 
-  const deleteBlog = async blog => {
+  const handleDeleteBlog = async blog => {
     try {
-      await blogService.remove(blog)
-
-      // const updatedBlogs = blogs.filter(b => {
-      //   return b.id !== blog.id
-      // })
-      // setBlogs(sortBlogs(updatedBlogs))
-
+      await dispatch(deleteBlog(blog))
       dispatch(setNotification(`"${blog.title}" was removed succesfully`, 3))
     } catch (ex) {
       dispatch(setNotification(ex.response.data.error, 3, true))
     }
-  }
-
-  const sortBlogs = (unsortedList) => {
-    const sortedList = unsortedList
-    sortedList.sort((a, b) => {return b.likes - a.likes})
-    return sortedList
   }
 
   useEffect(() => {
@@ -117,7 +99,7 @@ const App = () => {
             <button onClick={handleLogout}>Logout</button>
           </p>
           <BlogList blogFormRef={blogFormRef} handleBlogAdded={handleBlogAdded} blogs={blogs}
-            deleteBlog={deleteBlog} updateLikes={updateLikes} user={user}/>
+            deleteBlog={handleDeleteBlog} updateLikes={updateLikes} user={user}/>
         </>
       }
     </div>
