@@ -9,9 +9,9 @@ import { initBlogs } from './reducers/blogReducer'
 import { initUser } from './reducers/authReducer'
 import UserList from './components/UserList'
 import {initUsersList} from './reducers/userReducer'
-import Menu from './components/Menu'
 import User from './components/User'
 import Blog from './components/Blog'
+import Topbar from './components/Topbar'
 
 const App = () => {
   const user = useSelector(({ user }) => user)
@@ -32,24 +32,27 @@ const App = () => {
 
   return(
     <div>
+      <Topbar></Topbar>
       <h1>Blogs List App</h1>
       <LoginForm />
-      { user && <Menu />}
+      { user
+        ? <Switch>
+          <Route path='/blogs/:id'>
+            <Blog />
+          </Route>
+          <Route path='/users/:id'>
+            <User />
+          </Route>
+          <Route path='/users'>
+            <UserList />
+          </Route>
+          <Route path='/'>
+            <BlogList />
+          </Route>
+        </Switch>
+        : null
+      }
 
-      <Switch>
-        <Route path='/blogs/:id'>
-          { user && <Blog />}
-        </Route>
-        <Route path='/users/:id'>
-          { user && <User />}
-        </Route>
-        <Route path='/users'>
-          { user && <UserList />}
-        </Route>
-        <Route path='/'>
-          { user && <BlogList />}
-        </Route>
-      </Switch>
 
       <Notification/>
     </div>
