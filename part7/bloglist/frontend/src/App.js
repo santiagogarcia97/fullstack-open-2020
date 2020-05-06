@@ -11,6 +11,7 @@ import UserList from './components/UserList'
 import {initUsersList} from './reducers/userReducer'
 import Menu from './components/Menu'
 import User from './components/User'
+import Blog from './components/Blog'
 
 const App = () => {
   const user = useSelector(({ user }) => user)
@@ -36,6 +37,9 @@ const App = () => {
       { user && <Menu />}
 
       <Switch>
+        <Route path='/blogs/:id'>
+          { user && <Blog />}
+        </Route>
         <Route path='/users/:id'>
           { user && <User />}
         </Route>

@@ -1,7 +1,16 @@
-import React, { useState } from 'react'
+import React from 'react'
+import {deleteBlog, likeBlog} from '../reducers/blogReducer'
+import {setNotification} from '../reducers/notificationReducer'
+import {useDispatch, useSelector} from 'react-redux'
+import {useRouteMatch, useHistory} from 'react-router-dom'
 
-const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
-  const [showInfo, setShowInfo] = useState(false)
+const Blog = () => {
+  const dispatch = useDispatch()
+  const history = useHistory()
+  const user = useSelector(({ user }) => user)
+  const match = useRouteMatch('/blogs/:id')
+  const blog = useSelector(
+    ({ blogs }) => blogs.find(b => b.id === match.params.id))
 
   const blogStyle = {
     paddingTop: 5,
@@ -11,47 +20,49 @@ const Blog = ({ blog, updateLikes, deleteBlog, user }) => {
     marginBottom: 5
   }
 
-  const handleShowInfo = () => {
-    setShowInfo(!showInfo)
+  const handleUpdateLikes = async () => {
+    try {
+      await dispatch(likeBlog(blog))
+      dispatch(setNotification(`Likes of blog "${blog.title}" were updated`, 3))
+    } catch (ex) {
+      dispatch(setNotification(ex.response.data.error, 3, true))
+    }
   }
 
-  const handleLikeClick = () => {
-    updateLikes(blog)
+  const handleDeleteBlog = async () => {
+    try {
+      if(window.confirm(`Remove blog "${blog.title}"?`)) {
+        await dispatch(deleteBlog(blog))
+        history.push('')
+        dispatch(setNotification(`"${blog.title}" was removed succesfully`, 3))
+      }
+    } catch (ex) {
+      dispatch(setNotification(ex.response.data.error, 3, true))
+    }
   }
-
-  const handleDeleteClick = () => {
-    if(window.confirm(`Remove blog "${blog.title}"?`))
-      deleteBlog(blog)
-  }
-
+  if(!blog) return null
   return (
     <div style={blogStyle}>
       <p>
         {blog.title}
-        <button onClick={handleShowInfo}>{showInfo ? 'hide' : 'view'}</button>
       </p>
       <p>
         {blog.author}
       </p>
-      {showInfo ? (
-        <div>
-          <p>
-            <a href={blog.url}>{blog.url}</a>
-          </p>
-          <p>
-          Likes: {blog.likes} <button onClick={handleLikeClick}>Like</button>
-          </p>
-          {blog.user.username === user.username ? (
-            <p>
-              <button onClick={handleDeleteClick}>Delete</button>
-            </p>
-          )
-            : null
-          }
-        </div>
-      )
-        : null}
+      <p>
+        <a href={blog.url}>{blog.url}</a>
+      </p>
+      <p>
+        Likes: {blog.likes} <button onClick={handleUpdateLikes}>Like</button>
+      </p>
+      {blog.user.username === user.username
+        ? <p>
+          <button onClick={handleDeleteBlog}>Delete</button>
+        </p>
+        : null
+      }
     </div>
-  )}
+  )
+}
 
 export default Blog
