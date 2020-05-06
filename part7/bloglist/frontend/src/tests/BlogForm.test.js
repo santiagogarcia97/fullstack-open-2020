@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom/extend-expect'
 import { render, fireEvent } from '@testing-library/react'
-import BlogForm from './BlogForm'
+import BlogForm from '../components/BlogForm'
 
 describe('testing BlogForm', () => {
   test('component calls event handler', () => {
