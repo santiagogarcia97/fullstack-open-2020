@@ -44,7 +44,7 @@ const Blog = () => {
   return (
     <div style={blogStyle}>
       <p>
-        {blog.title}
+        <h3>{blog.title}</h3>
       </p>
       <p>
         {blog.author}
@@ -60,6 +60,13 @@ const Blog = () => {
           <button onClick={handleDeleteBlog}>Delete</button>
         </p>
         : null
+      }
+      <h5>Comments</h5>
+      {blog.comments.length !== 0
+        ? <ul>
+          {blog.comments.map(comment => <li key={comment}>{comment}</li>)}
+        </ul>
+        : <p>There are no comments for this blog</p>
       }
     </div>
   )
