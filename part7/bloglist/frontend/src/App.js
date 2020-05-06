@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Notification from './components/Notification'
 import LoginForm from './components/LoginForm'
 import BlogList from './components/BlogList'
 import { setNotification } from './reducers/notificationReducer'
+import {addBlog, initBlogs} from './reducers/blogReducer'
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const blogs = useSelector(({ blogs }) => blogs)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
@@ -46,11 +47,9 @@ const App = () => {
   const handleBlogAdded = async newBlog => {
     try {
       blogFormRef.current.toggleVisibility()
-      const blog = await blogService.create(newBlog)
-
-      blog.user = { username: user.username }
-      setBlogs(blogs.concat(blog))
-      dispatch(setNotification(`A new blog "${blog.title}" by "${blog.author}" was added`, 3))
+      newBlog.user = { username: user.username }
+      dispatch(addBlog(newBlog))
+      dispatch(setNotification(`A new blog "${newBlog.title}" by "${newBlog.author}" was added`, 3))
     } catch (ex) {
       dispatch(setNotification(ex.response.data.error, 3, true))
     }
@@ -63,7 +62,7 @@ const App = () => {
 
       const updatedBlogs = blogs
       updatedBlogs[updatedBlogs.findIndex(b => b.id === blog.id)].likes = blog.likes
-      setBlogs(sortBlogs(updatedBlogs))
+      //setBlogs(sortBlogs(updatedBlogs))
 
       dispatch(setNotification(`Likes of blog "${blog.title}" were updated`, 3))
     } catch (ex) {
@@ -75,10 +74,10 @@ const App = () => {
     try {
       await blogService.remove(blog)
 
-      const updatedBlogs = blogs.filter(b => {
-        return b.id !== blog.id
-      })
-      setBlogs(sortBlogs(updatedBlogs))
+      // const updatedBlogs = blogs.filter(b => {
+      //   return b.id !== blog.id
+      // })
+      // setBlogs(sortBlogs(updatedBlogs))
 
       dispatch(setNotification(`"${blog.title}" was removed succesfully`, 3))
     } catch (ex) {
@@ -93,10 +92,8 @@ const App = () => {
   }
 
   useEffect(() => {
-    blogService.getAll().then( b => {
-      setBlogs(sortBlogs(b))
-    })
-  }, [])
+    dispatch(initBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogUser')
