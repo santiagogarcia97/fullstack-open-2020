@@ -30,4 +30,4 @@ usersRouter.post('/', async (req, res, next) => {
   res.json(savedUser.toJSON())
 })
 
-module.exports = usersRouter
+module.exports   = usersRouter

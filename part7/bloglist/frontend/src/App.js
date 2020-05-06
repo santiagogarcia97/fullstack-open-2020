@@ -10,6 +10,7 @@ import { initUser } from './reducers/authReducer'
 import UserList from './components/UserList'
 import {initUsersList} from './reducers/userReducer'
 import Menu from './components/Menu'
+import User from './components/User'
 
 const App = () => {
   const user = useSelector(({ user }) => user)
@@ -35,6 +36,9 @@ const App = () => {
       { user && <Menu />}
 
       <Switch>
+        <Route path='/users/:id'>
+          { user && <User />}
+        </Route>
         <Route path='/users'>
           { user && <UserList />}
         </Route>
