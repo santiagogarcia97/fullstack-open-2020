@@ -1,12 +1,14 @@
 import React from 'react'
-import {deleteBlog, likeBlog} from '../reducers/blogReducer'
+import {commentBlog, deleteBlog, likeBlog} from '../reducers/blogReducer'
 import {setNotification} from '../reducers/notificationReducer'
 import {useDispatch, useSelector} from 'react-redux'
 import {useRouteMatch, useHistory} from 'react-router-dom'
+import {useField} from '../hooks'
 
 const Blog = () => {
   const dispatch = useDispatch()
   const history = useHistory()
+  const newComment = useField('text')
   const user = useSelector(({ user }) => user)
   const match = useRouteMatch('/blogs/:id')
   const blog = useSelector(
@@ -34,18 +36,26 @@ const Blog = () => {
       if(window.confirm(`Remove blog "${blog.title}"?`)) {
         await dispatch(deleteBlog(blog))
         history.push('')
-        dispatch(setNotification(`"${blog.title}" was removed succesfully`, 3))
+        dispatch(setNotification(`"${blog.title}" was removed successfully`, 3))
       }
     } catch (ex) {
       dispatch(setNotification(ex.response.data.error, 3, true))
     }
   }
+
+  const handleNewComment = async () => {
+    try{
+      await dispatch((commentBlog(blog.id, newComment.input.value)))
+      dispatch(setNotification(`The comment for blog "${blog.title}" was added successfully`, 3))
+    } catch (ex) {
+      dispatch(setNotification(ex.response.data.error, 3, true))
+    }
+  }
+
   if(!blog) return null
   return (
     <div style={blogStyle}>
-      <p>
-        <h3>{blog.title}</h3>
-      </p>
+      <h3>{blog.title}</h3>
       <p>
         {blog.author}
       </p>
@@ -64,10 +74,14 @@ const Blog = () => {
       <h5>Comments</h5>
       {blog.comments.length !== 0
         ? <ul>
-          {blog.comments.map(comment => <li key={comment}>{comment}</li>)}
+          {blog.comments.map((comment, i) => <li key={i}>{comment}</li>)}
         </ul>
         : <p>There are no comments for this blog</p>
       }
+      <p>
+        <input {...newComment.input}/>
+        <button onClick={handleNewComment}>Add comment</button>
+      </p>
     </div>
   )
 }

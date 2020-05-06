@@ -6,9 +6,9 @@ const blogReducer = (state = [], action) => {
     return sortBlogs(action.data)
   case 'ADD_BLOG':
     return sortBlogs([...state, action.data])
-  case 'LIKE_BLOG':
+  case 'UPDATE_BLOG':
     return sortBlogs(state.map(blog =>
-      blog !== action.data.id ? blog : action.data))
+      blog.id !== action.data.id ? blog : action.data))
   case 'DELETE_BLOG':
     return sortBlogs(state.filter(blog => blog.id !== action.data.id))
   default:
@@ -46,10 +46,10 @@ export const addBlog = (newObject) => {
 export const likeBlog = (blog) => {
   return async dispatch => {
     blog.likes++
-    await blogService.update(blog)
+    const updatedBlog = await blogService.update(blog)
     dispatch({
-      type: 'LIKE_BLOG',
-      data: blog
+      type: 'UPDATE_BLOG',
+      data: updatedBlog
     })
   }
 }
@@ -60,6 +60,17 @@ export const deleteBlog = (blog) => {
     dispatch({
       type: 'DELETE_BLOG',
       data: blog
+    })
+  }
+}
+
+export const commentBlog = (blogId, comment) => {
+  return async dispatch => {
+    const updatedBlog = await blogService.addComment(blogId, comment)
+    console.log(updatedBlog)
+    dispatch({
+      type: 'UPDATE_BLOG',
+      data: updatedBlog
     })
   }
 }
