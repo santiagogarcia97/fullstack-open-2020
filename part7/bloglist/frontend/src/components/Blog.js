@@ -4,6 +4,7 @@ import {setNotification} from '../reducers/notificationReducer'
 import {useDispatch, useSelector} from 'react-redux'
 import {useRouteMatch, useHistory} from 'react-router-dom'
 import {useField} from '../hooks'
+import {Button, Card, Form} from 'react-bootstrap'
 
 const Blog = () => {
   const dispatch = useDispatch()
@@ -14,18 +15,10 @@ const Blog = () => {
   const blog = useSelector(
     ({ blogs }) => blogs.find(b => b.id === match.params.id))
 
-  const blogStyle = {
-    paddingTop: 5,
-    paddingLeft: 5,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
   const handleUpdateLikes = async () => {
     try {
       await dispatch(likeBlog(blog))
-      dispatch(setNotification(`Likes of blog "${blog.title}" were updated`, 3))
+      dispatch(setNotification(`Likes of blog "${blog.title}" were updated`, 5))
     } catch (ex) {
       dispatch(setNotification(ex.response.data.error, 3, true))
     }
@@ -36,7 +29,7 @@ const Blog = () => {
       if(window.confirm(`Remove blog "${blog.title}"?`)) {
         await dispatch(deleteBlog(blog))
         history.push('')
-        dispatch(setNotification(`"${blog.title}" was removed successfully`, 3))
+        dispatch(setNotification(`"${blog.title}" was removed successfully`, 5))
       }
     } catch (ex) {
       dispatch(setNotification(ex.response.data.error, 3, true))
@@ -46,7 +39,7 @@ const Blog = () => {
   const handleNewComment = async () => {
     try{
       await dispatch((commentBlog(blog.id, newComment.input.value)))
-      dispatch(setNotification(`The comment for blog "${blog.title}" was added successfully`, 3))
+      dispatch(setNotification(`The comment for blog "${blog.title}" was added successfully`, 5))
     } catch (ex) {
       dispatch(setNotification(ex.response.data.error, 3, true))
     }
@@ -54,35 +47,36 @@ const Blog = () => {
 
   if(!blog) return null
   return (
-    <div style={blogStyle}>
-      <h3>{blog.title}</h3>
-      <p>
-        {blog.author}
-      </p>
-      <p>
-        <a href={blog.url}>{blog.url}</a>
-      </p>
-      <p>
-        Likes: {blog.likes} <button onClick={handleUpdateLikes}>Like</button>
-      </p>
-      {blog.user.username === user.username
-        ? <p>
-          <button onClick={handleDeleteBlog}>Delete</button>
-        </p>
-        : null
-      }
-      <h5>Comments</h5>
-      {blog.comments.length !== 0
-        ? <ul>
-          {blog.comments.map((comment, i) => <li key={i}>{comment}</li>)}
-        </ul>
-        : <p>There are no comments for this blog</p>
-      }
-      <p>
-        <input {...newComment.input}/>
-        <button onClick={handleNewComment}>Add comment</button>
-      </p>
-    </div>
+    <Card className='text-center'>
+      <Card.Header>{blog.author}</Card.Header>
+      <Card.Body>
+        <Card.Title>{blog.title}</Card.Title>
+        <Card.Text>
+          <a href={blog.url}>{blog.url}</a>
+          <br/>
+          <strong>{blog.likes}</strong> likes!
+        </Card.Text>
+        <Button variant='primary' onClick={handleUpdateLikes}>Like this blog!</Button>
+        {blog.user.username === user.username
+          ? <p className='m-2'><Button variant='danger' onClick={handleDeleteBlog}>Delete</Button></p>
+          : null
+        }
+      </Card.Body>
+
+      <Card.Footer>
+        <h5>Comments</h5>
+        {blog.comments.length !== 0
+          ? blog.comments.map((comment, i) => <p key={i}>{comment}</p>)
+          : <p className='text-muted'>There are no comments for this blog</p>
+        }
+        <>
+          <Form.Group>
+            <Form.Control {...newComment.input} />
+            <Button onClick={handleNewComment} className='my-2'>Add comment</Button>
+          </Form.Group>
+        </>
+      </Card.Footer>
+    </Card>
   )
 }
 

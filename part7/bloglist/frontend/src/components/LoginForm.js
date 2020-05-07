@@ -4,6 +4,7 @@ import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { useField } from '../hooks'
 import { useHistory } from 'react-router-dom'
+import {Button, Form} from 'react-bootstrap'
 
 const LoginForm = () => {
   const username = useField('text')
@@ -23,34 +24,26 @@ const LoginForm = () => {
       password.reset()
       history.push('/')
     } catch (ex) {
-      dispatch(setNotification(ex.response.data.error, 3, true))
+      dispatch(setNotification(ex.response.data.error, 5, true))
     }
   }
 
   if(user) return null
 
   return (
-    <div>
+    <div className='m-auto p-5 w-50 text-center'>
       <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <table>
-          <tbody>
-            <tr>
-              <td>Username</td>
-              <td>
-                <input {...username.input}/>
-              </td>
-            </tr>
-            <tr>
-              <td>Password</td>
-              <td>
-                <input {...password.input}/>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <button id='login-button' type='submit'>Login</button>
-      </form>
+      <Form onSubmit={handleLogin}>
+        <Form.Group>
+          <Form.Label>Username</Form.Label>
+          <Form.Control {...username.input} />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Password</Form.Label>
+          <Form.Control {...password.input} />
+        </Form.Group>
+        <Button id='login-button' type='submit' block>Login</Button>
+      </Form>
     </div>
   )
 }

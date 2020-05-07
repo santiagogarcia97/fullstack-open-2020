@@ -1,16 +1,18 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import {Link} from 'react-router-dom'
+import {Table} from 'react-bootstrap'
 
 const UserList = () => {
   const userList = useSelector(({ userList }) => userList)
   return(
-    <div>
-      <table>
+    <div className='text-center'>
+      <h2>Users List</h2>
+      <Table responsive striped bordered hover>
         <thead>
           <tr>
-            <th></th>
-            <th>Blogs created</th>
+            <th className='w-50'>User</th>
+            <th className='w-50'>Blogs created</th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +25,7 @@ const UserList = () => {
             </tr>
           )}
         </tbody>
-      </table>
+      </Table>
     </div>
   )
 }

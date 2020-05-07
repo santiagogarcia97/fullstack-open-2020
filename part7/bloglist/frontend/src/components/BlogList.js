@@ -5,6 +5,7 @@ import { addBlog } from '../reducers/blogReducer'
 import { setNotification } from '../reducers/notificationReducer'
 import { useDispatch, useSelector } from 'react-redux'
 import {Link} from 'react-router-dom'
+import {ListGroup} from 'react-bootstrap'
 
 const BlogList = () => {
   const blogs = useSelector(({ blogs }) => blogs)
@@ -24,17 +25,18 @@ const BlogList = () => {
   }
 
   return (
-    <div>
+    <div className='text-center'>
+      <h2>Blogs List</h2>
       <Togglable buttonLabel='New Blog' ref={blogFormRef}>
         <BlogForm onBlogAdded={handleBlogAdded}/>
       </Togglable>
-      <ul>
-        {blogs.map(blog =>
-          <li key={blog.id}>
-            <Link to={`/blogs/${blog.id}`}>{blog.title}</Link>
-          </li>
+      <ListGroup >
+        {blogs.map(b =>
+          <ListGroup.Item key={b.id}>
+            <Link to={`/blogs/${b.id}`}>{b.title}</Link>
+          </ListGroup.Item>
         )}
-      </ul>
+      </ListGroup>
     </div>
   )
 }

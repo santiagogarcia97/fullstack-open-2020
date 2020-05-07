@@ -1,47 +1,40 @@
-import React, { useState } from 'react'
+import React from 'react'
+import {Button, Form} from 'react-bootstrap'
+import { useField } from '../hooks'
 
 const BlogForm = ({ onBlogAdded }) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
 
   const handleNewBlogSubmit = event => {
     event.preventDefault()
-    onBlogAdded({ title, author, url })
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    onBlogAdded({
+      title: title.input.value,
+      author: author.input.value,
+      url: url.input.value
+    })
+    title.reset()
+    author.reset()
+    url.reset()
   }
 
   return (
-    <form onSubmit={handleNewBlogSubmit}>
-      <table>
-        <tbody>
-          <tr>
-            <td>Title</td>
-            <td>
-              <input id="title" type="text" value={title}
-                onChange={e => setTitle(e.target.value)}/>
-            </td>
-          </tr>
-          <tr>
-            <td>Author</td>
-            <td>
-              <input id="author" type="text" value={author}
-                onChange={e => setAuthor(e.target.value)}/>
-            </td>
-          </tr>
-          <tr>
-            <td>URL</td>
-            <td>
-              <input id="url" type="text" value={url}
-                onChange={e => setUrl(e.target.value)}/>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <button type="submit">Create</button>
-    </form>
+    <Form onSubmit={handleNewBlogSubmit} className='m-2 text-center'>
+      <Form.Group>
+        <Form.Label>Title</Form.Label>
+        <Form.Control {...title.input} />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Author</Form.Label>
+        <Form.Control {...author.input} />
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>URL</Form.Label>
+        <Form.Control {...url.input} />
+      </Form.Group>
+      <Button variant='success' type="submit">Create</Button>
+    </Form>
   )
 }
 

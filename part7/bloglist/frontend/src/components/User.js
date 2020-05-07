@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useRouteMatch } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { ListGroup } from 'react-bootstrap'
 
 const User = () => {
   const match = useRouteMatch('/users/:id')
@@ -10,15 +11,16 @@ const User = () => {
 
   return(
     user
-      ? <div>
+      ? <div className='text-center'>
         <h2>{user.name}</h2>
-        <ul>
+        <p><strong>{user.blogs.length}</strong> blogs created</p>
+        <ListGroup >
           {user.blogs.map(b =>
-            <li key={b.id}>
+            <ListGroup.Item key={b.id}>
               <Link to={`/blogs/${b.id}`}>{b.title}</Link>
-            </li>
+            </ListGroup.Item>
           )}
-        </ul>
+        </ListGroup>
       </div>
       : null
 
