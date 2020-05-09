@@ -31,39 +31,47 @@ https://phonebook-fs20.herokuapp.com/
 | 4     | 22/22   |
 | 5     | 22/22   |
 | 6     | 21/21   |
+| 7     | 21/21   |
 
 ## Course material
 ### Part 0: Fundamentals of Web apps
-* General info
-* Fundamentals of Web apps
+	* General info
+	* Fundamentals of Web apps
 ### Part 1: Introduction to React
-* Introduction to React
-* Javascript
-* Component state, event handlers
-* A more complex state, debugging React apps
+	* Introduction to React
+	* Javascript
+	* Component state, event handlers
+	* A more complex state, debugging React apps
 ### Part 2: Communicating with server
-* Rendering a collection, modules
-* Forms
-* Getting data from server
-* Altering data in server
-* Adding styles to React app
+	* Rendering a collection, modules
+	* Forms
+	* Getting data from server
+	* Altering data in server
+	* Adding styles to React app
 ### Part 3: Programming a server with NodeJS and Express
-* Node.js and Express
-* Deploying app to internet
-* Saving data to MongoDB
-* Validation and ESLint
+	* Node.js and Express
+	* Deploying app to internet
+	* Saving data to MongoDB
+	* Validation and ESLint
 ### Part 4: Testing Express servers, user administration
-* Structure of backend application, introduction to testing
-* Testing the backend
-* User administration
-* Token authentication
+	* Structure of backend application, introduction to testing
+	* Testing the backend
+	* User administration
+	* Token authentication
 ### Part 5: Testing React apps
-* Login in frontend
-* props.children and proptypes
-* Testing React apps
-* End to End Testing
+	* Login in frontend
+	* props.children and proptypes
+	* Testing React apps
+	* End to End Testing
 ### Part 6: State management with Redux
-* Flux-architecture and Redux
-* Many reducers
-* Communicating with server in a redux app
-* connect
+	* Flux-architecture and Redux
+	* Many reducers
+	* Communicating with server in a redux app
+	* connect
+### Part 7: React router, custom hooks, styling app with CSS and webpack
+	* React-router
+	* Custom hooks
+	* More about styles
+	* Webpack
+	* Class components, Miscellaneous
+	* Exercises: extending the bloglist

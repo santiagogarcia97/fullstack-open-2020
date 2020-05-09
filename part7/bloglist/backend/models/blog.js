@@ -5,12 +5,15 @@ mongoose.set('useCreateIndex', true)
 const blogSchema = mongoose.Schema({
   title: {
     type: String,
-    required: true
+    required: [true, 'Title is required']
   },
-  author: String,
+  author: {
+    type: String,
+    required: [true, 'Author is required']
+  },
   url: {
     type: String,
-    required: true
+    required: [true, 'Url is required']
   },
   likes: {
     type: Number,
