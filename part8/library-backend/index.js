@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server')
+const uuid = require('uuid/v1')
 
 let authors = [
   {
@@ -97,6 +98,14 @@ const typeDefs = gql`
         allBooks(author: String, genre: String): [Book]
         allAuthors: [Author]!
     }
+    type Mutation {
+        addBook(
+            title: String!
+            author: String!
+            published: Int!
+            genres: [String!]!
+        ): Book
+    }
 `
 
 const resolvers = {
@@ -104,23 +113,45 @@ const resolvers = {
     authorCount: () => authors.length,
     bookCount: () => books.length,
     allBooks: (root, args) => {
-        if(args.author && args.genre) {
-          return books
-            .filter(book => book.author === args.author && book.genres.includes(args.genre))
-        }
-        if(args.author) {
-          return books.filter(book => book.author === args.author)
-        }
-        if(args.genre) {
-          return books.filter(book => book.genres.includes(args.genre))
-        }
+      if (args.author && args.genre) {
         return books
-      },
+          .filter(book => book.author === args.author && book.genres.includes(args.genre))
+      }
+      if (args.author) {
+        return books.filter(book => book.author === args.author)
+      }
+      if (args.genre) {
+        return books.filter(book => book.genres.includes(args.genre))
+      }
+      return books
+    },
     allAuthors: () => {
       return authors.map(author => {
-        const bookCount = books.reduce((n, book) => {return n + (book.author === author.name)}, 0)
+        const bookCount = books.reduce((n, book) => {
+          return n + (book.author === author.name)
+        }, 0)
         return {...author, bookCount}
       })
+    }
+  },
+
+  Mutation: {
+    addBook: (root, args) => {
+      const book = {
+        ...args,
+        id: uuid()
+      }
+
+      books = books.concat(book)
+
+      if (!authors.find(author => author.name === args.author)) {
+        authors = authors.concat({
+          name: args.author,
+          id: uuid()
+        })
+      }
+
+      return book
     }
   }
 }
