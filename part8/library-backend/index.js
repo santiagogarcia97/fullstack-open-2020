@@ -23,6 +23,7 @@ const typeDefs = gql`
         name: String!
         born: Int
         id: ID!
+        books: [Book]
         bookCount: Int!
     }
     type Book {
@@ -66,12 +67,16 @@ const resolvers = {
     authorCount: () => Author.count({}),
     bookCount: () => Book.count({}),
     allBooks: res.allBooks,
-    allAuthors: () => Author.find({}),
+    allAuthors: res.allAuthors,
     me: (root, args, context) => {
       return context.currentUser
     }
   },
-
+  Author: {
+    bookCount: async (root) => {
+      return root.books.length
+    }
+  },
   Mutation: {
     addBook: async (root, args, context) => {
       const book = new Book({ ...args })
