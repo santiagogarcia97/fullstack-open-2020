@@ -1,18 +1,23 @@
 import React, {useState} from 'react'
+import Select from 'react-select'
 
-const BirthYearForm = ({setBirthYear}) => {
-  const [name, setName] = useState('')
+const BirthYearForm = ({setBirthYear, authors}) => {
+  const [selectedAuthor, setSelectedAuthor] = useState('')
   const [year, setYear] = useState('')
+
+  const selectOptions = authors.map(a => {
+    return {value: a.name, label: a.name}
+  })
 
   const updateAuthor = async () => {
     await setBirthYear({
       variables: {
-        name: name,
+        name: selectedAuthor,
         setBornTo: parseInt(year)
       }
     })
 
-    setName('')
+    setSelectedAuthor('')
     setYear('')
   }
 
@@ -21,7 +26,11 @@ const BirthYearForm = ({setBirthYear}) => {
       <h3>Change author birthyear</h3>
       <br/>
       <label>Name: </label>
-      <input type='text' value={name} onChange={({target}) => {setName(target.value)}}/>
+      <Select
+        value={selectedAuthor}
+        onChange={(target) => {setSelectedAuthor(target.value)}}
+        options={selectOptions}
+      />
       <br/>
       <label>Birthyear: </label>
       <input type='number' value={year} onChange={({target}) => {setYear(target.value)}}/>
