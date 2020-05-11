@@ -17,7 +17,16 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null)
   const client = useApolloClient()
   const [addBook] = useMutation(CREATE_BOOK, {
-    refetchQueries: [{query: GET_BOOKS}, {query: ALL_AUTHORS}]
+    update: (store, response) => {
+      const dataInStore = store.readQuery({ query: GET_BOOKS })
+      store.writeQuery({
+        query: GET_BOOKS,
+        data: {
+          ...dataInStore,
+          allBooks: [ ...dataInStore.allBooks, response.data.addBook ]
+        }
+      })
+    }
   })
   const [setBirthYear] = useMutation(SET_AUTHOR_BIRTH_YEAR, {
     refetchQueries: [{query: ALL_AUTHORS}]
@@ -76,8 +85,7 @@ const App = () => {
       />
 
       <Books
-        show={page === 'books'}
-        books={books}
+        show={page === 'books'} books={books}
       />
 
       <RecommendedBooks

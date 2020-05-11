@@ -6,10 +6,14 @@ const Books = (props) => {
   const [books, setBooks] = useState([])
   const [genres, setGenres] = useState([])
 
-  const [selectedGenre, setSelectedGenre] = useState('')
+  const [selectedGenre, setSelectedGenre] = useState(null)
   const [getBooksByGenre, result] = useLazyQuery(GET_BOOKS)
   const getBooks = (genre) => {
-    getBooksByGenre({ variables: { genre: genre } })
+    getBooksByGenre({variables: { genre: genre }, fetchPolicy: 'network-only'})
+  }
+
+  const handleGenreClick = (genre) => {
+    setSelectedGenre(genre)
   }
 
   useEffect(() => {
@@ -25,6 +29,12 @@ const Books = (props) => {
 
     setGenres([...new Set(genresList)])
   }, [books])
+
+  useEffect(() => {
+    if (props.books.data) {
+      setBooks(props.books.data.allBooks)
+    }
+  }, [props.books.data])
 
   useEffect(() => {
     getBooks(selectedGenre)
@@ -60,9 +70,9 @@ const Books = (props) => {
 
       <div>
         {genres.map(genre => {
-          return <button onClick={()=>{setSelectedGenre(genre)}} key={genre}>{genre}</button>
+          return <button onClick={()=>{handleGenreClick(genre)}} key={genre}>{genre}</button>
         })}
-        <button onClick={()=>{setSelectedGenre('')}}>clear</button>
+        <button onClick={()=>{setSelectedGenre(null)}}>clear</button>
       </div>
     </div>
   )
