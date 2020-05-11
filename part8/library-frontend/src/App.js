@@ -18,14 +18,7 @@ const App = () => {
   const client = useApolloClient()
   const [addBook] = useMutation(CREATE_BOOK, {
     update: (store, response) => {
-      const dataInStore = store.readQuery({ query: GET_BOOKS })
-      store.writeQuery({
-        query: GET_BOOKS,
-        data: {
-          ...dataInStore,
-          allBooks: [ ...dataInStore.allBooks, response.data.addBook ]
-        }
-      })
+      updateCacheWith(response.data.addBook)
     }
   })
   const [setBirthYear] = useMutation(SET_AUTHOR_BIRTH_YEAR, {
@@ -54,6 +47,19 @@ const App = () => {
     }
   }
 
+  const updateCacheWith = (addedBook) => {
+    const includedIn = (set, object) =>
+      set.map(b => b.id).includes(object.id)
+
+    const dataInStore = client.readQuery({ query: GET_BOOKS })
+    if (!includedIn(dataInStore.allBooks, addedBook)) {
+      client.writeQuery({
+        query: GET_BOOKS,
+        data: { allBooks : dataInStore.allBooks.concat(addedBook) }
+      })
+    }
+  }
+
   const notification = () => errorMessage &&
     <span style={{ color: 'red' }}>
       {errorMessage}
@@ -66,7 +72,9 @@ const App = () => {
 
   useSubscription(BOOK_ADDED, {
     onSubscriptionData: ({ subscriptionData }) => {
-      window.alert(`A new book has been added: "${subscriptionData.data.bookAdded.title}"`)
+      const addedBook = subscriptionData.data.bookAdded
+      window.alert(`${addedBook.title} added`)
+      updateCacheWith(addedBook)
     }
   })
 
