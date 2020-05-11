@@ -1,6 +1,8 @@
+const {UserInputError} = require('apollo-server')
 const Book = require('../models/Book')
 
 module.exports = (root, args) => {
+  try {
   // if (args.author && args.genre) {
   //   return books
   //     .filter(book => book.author === args.author && book.genres.includes(args.genre))
@@ -12,4 +14,9 @@ module.exports = (root, args) => {
     return Book.find({ genres: { $in: [args.genre] } })
   }
   return Book.find({})
+  } catch (err) {
+    throw new UserInputError(err.message, {
+      invalidArgs: args
+    })
+  }
 }
