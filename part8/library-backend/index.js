@@ -1,8 +1,10 @@
-const { ApolloServer, gql } = require('apollo-server')
+const { ApolloServer, gql, UserInputError, AuthenticationError } = require('apollo-server')
 const {MONGO_URL, SECRET_SIGN} = require('./utils/config')
 const res = require('./resolvers')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const { PubSub } = require('apollo-server')
+const pubsub = new PubSub()
 
 const Author = require('./models/Author')
 const Book = require('./models/Book')
@@ -54,6 +56,9 @@ const typeDefs = gql`
             password: String!
         ): Token
     }
+    type Subscription {
+        bookAdded: Book!
+    }
 `
 
 const resolvers = {
@@ -68,10 +73,35 @@ const resolvers = {
   },
 
   Mutation: {
-    addBook: res.addBook,
+    addBook: async (root, args, context) => {
+      const book = new Book({ ...args })
+      const currentUser = context.currentUser
+
+      if (!currentUser) {
+        throw new AuthenticationError("not authenticated")
+      }
+      let savedBook
+      try {
+        savedBook = await book.save()
+        savedBook = Book.populate(savedBook, {path:'author'})
+      } catch (error) {
+        throw new UserInputError(error.message, {
+          invalidArgs: args,
+        })
+      }
+
+      await pubsub.publish('BOOK_ADDED', { bookAdded: savedBook })
+
+      return savedBook
+    },
     editAuthor: res.editAuthor,
     createUser:  res.createUser,
     login: res.login
+  },
+  Subscription: {
+    bookAdded: {
+      subscribe: () => pubsub.asyncIterator(['BOOK_ADDED'])
+    }
   }
 }
 
@@ -93,8 +123,9 @@ const server = new ApolloServer({
 mongoose.connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log('Connected to MongoDB')
-    server.listen().then(({ url }) => {
+    server.listen().then(({ url, subscriptionsUrl }) => {
       console.log(`Server ready at ${url}`)
+      console.log(`Subscriptions ready at ${subscriptionsUrl}`)
     })
   })
   .catch((error) => {
