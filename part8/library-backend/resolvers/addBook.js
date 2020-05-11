@@ -1,7 +1,11 @@
-const {UserInputError} = require('apollo-server')
+const {UserInputError, AuthenticationError} = require('apollo-server')
 const Book  = require('../models/Book')
 
-module.exports = async (root, args) => {
+module.exports = async (root, args, {currentUser}) => {
+
+  if (!currentUser) {
+    throw new AuthenticationError("not authenticated")
+  }
   try {
     const book = new Book({...args})
 
