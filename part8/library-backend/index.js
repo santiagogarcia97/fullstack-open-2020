@@ -4,6 +4,9 @@ const {MONGO_URL} = require('./utils/config')
 const res = require('./resolvers')
 const mongoose = require('mongoose')
 
+const Author = require('./models/Author')
+const Book = require('./models/Book')
+
 const typeDefs = gql`
     type Author {
         name: String!
@@ -37,22 +40,15 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    authorCount: () => authors.length,
-    bookCount: () => books.length,
+    authorCount: () => Author.count({}),
+    bookCount: () => Book.count({}),
     allBooks: res.allBooks,
-    allAuthors: res.allAuthors,
+    allAuthors: () => Author.find({}),
   },
 
   Mutation: {
     addBook: res.addBook,
-    editAuthor: (root, args) => {
-      const authorToEdit = authors.find(author => author.name === args.name)
-      if(!authorToEdit) return null
-
-      authorToEdit.born = args.setBornTo
-      authors = authors.map(author => { return author.id !== authorToEdit.id ? author : authorToEdit})
-      return authorToEdit
-    }
+    editAuthor: res.editAuthor
   }
 }
 
