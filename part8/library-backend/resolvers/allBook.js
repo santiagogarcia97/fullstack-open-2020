@@ -12,8 +12,9 @@ module.exports = (root, args) => {
   // }
   if (args.genre) {
     return Book.find({ genres: { $in: [args.genre] } })
+      .populate('author')
   }
-  return Book.find({})
+  return Book.find({}).populate('author')
   } catch (err) {
     throw new UserInputError(err.message, {
       invalidArgs: args
