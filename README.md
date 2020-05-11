@@ -32,6 +32,7 @@ https://phonebook-fs20.herokuapp.com/
 | 5     | 22/22   |
 | 6     | 21/21   |
 | 7     | 21/21   |
+| 8     | 26/26   |
 
 ## Course material
 ### Part 0: Fundamentals of Web apps
@@ -75,3 +76,9 @@ https://phonebook-fs20.herokuapp.com/
 	* Webpack
 	* Class components, Miscellaneous
 	* Exercises: extending the bloglist
+### Part 8: GraphQL
+	* GraphQL-server
+	* React and GraphQL	
+	* Database and user administration
+	* Login and updating the cache
+	* Fragments and subscriptions
