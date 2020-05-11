@@ -10,8 +10,7 @@ module.exports = async (root, args, {currentUser}) => {
     const book = new Book({...args})
 
     const savedBook = await book.save()
-
-    return savedBook
+    return Book.populate(savedBook, {path:'author'})
   } catch (err) {
     throw new UserInputError(err.message, {
       invalidArgs: args
