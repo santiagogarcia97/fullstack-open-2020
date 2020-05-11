@@ -3,8 +3,8 @@ import Authors from './components/Authors'
 import Books from './components/Books'
 import NewBook from './components/NewBook'
 import LoginForm from './components/LoginForm'
-import {useApolloClient, useMutation, useQuery} from '@apollo/client'
-import {ALL_AUTHORS, GET_BOOKS, CREATE_BOOK, SET_AUTHOR_BIRTH_YEAR, LOGIN, USER } from './queries'
+import {useApolloClient, useMutation, useQuery, useSubscription} from '@apollo/client'
+import {ALL_AUTHORS, GET_BOOKS, CREATE_BOOK, SET_AUTHOR_BIRTH_YEAR, LOGIN, USER, BOOK_ADDED} from './queries'
 import RecommendedBooks from './components/RecommendenBooks'
 
 const App = () => {
@@ -63,6 +63,12 @@ const App = () => {
     const jsonToken = localStorage.getItem('libraryUserToken')
     if(jsonToken) setToken(jsonToken)
   }, [])
+
+  useSubscription(BOOK_ADDED, {
+    onSubscriptionData: ({ subscriptionData }) => {
+      window.alert(`A new book has been added: "${subscriptionData.data.bookAdded.title}"`)
+    }
+  })
 
   return (
     <div>
