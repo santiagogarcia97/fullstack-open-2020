@@ -1,5 +1,10 @@
 type Rating = 1 | 2 | 3
 
+interface excerciseData {
+  target: Rating
+  hoursPerDay: Array<number>
+}
+
 interface Result {
   periodLength: number,
   trainingDays: number,
@@ -8,6 +13,19 @@ interface Result {
   ratingDescription: string,
   target: Rating,
   average: number
+}
+
+const parseArguments = (args: Array<string>): excerciseData => {
+  if (args.length < 4) throw new Error('Not enough arguments')
+
+  try {
+    const target = parseInt(args[2]) as Rating
+    const hoursPerDay = args.slice(3).map(hour => parseFloat(hour))
+
+    return {target, hoursPerDay}
+  } catch (e) {
+    throw new Error('Provided values were not numbers!')
+  }
 }
 
 const calculateExercises = (hoursPerDay: Array<number>, target: Rating) : Result => {
@@ -57,4 +75,9 @@ const calculateExercises = (hoursPerDay: Array<number>, target: Rating) : Result
   return result
 }
 
-console.log(calculateExercises([3, 0, 2, 4.5, 0, 3, 1], 2))
+try {
+  const { target, hoursPerDay } = parseArguments(process.argv)
+  console.log(calculateExercises(hoursPerDay, target))
+} catch (e) {
+  console.log('Error, something bad happened, message: ', e.message);
+}
