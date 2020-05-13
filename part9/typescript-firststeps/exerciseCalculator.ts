@@ -1,6 +1,6 @@
-type Rating = 1 | 2 | 3;
+export type Rating = 1 | 2 | 3;
 
-interface ExcerciseData {
+export interface ExcerciseData {
   target: Rating;
   hoursPerDay: Array<number>;
 }
@@ -28,7 +28,7 @@ const parseArguments = (args: Array<string>): ExcerciseData => {
   }
 };
 
-const calculateExercises = (hoursPerDay: Array<number>, target: Rating): Result => {
+export const calculateExercises = (data: ExcerciseData): Result => {
 
   const calculateRating = (avg: number): Rating => {
     if (avg < 1.5)
@@ -37,6 +37,8 @@ const calculateExercises = (hoursPerDay: Array<number>, target: Rating): Result 
       return 2;
     if (avg >= 2)
       return 3;
+    else
+      return 1;
   };
 
   const getDescription = (rating: Rating): string => {
@@ -51,11 +53,11 @@ const calculateExercises = (hoursPerDay: Array<number>, target: Rating): Result 
         return 'Wrong Rating';
     }
   };
-  const periodLength = hoursPerDay.length;
+  const periodLength = data.hoursPerDay.length;
 
-  const trainingDays = hoursPerDay.filter(hours => hours !== 0).length;
+  const trainingDays = data.hoursPerDay.filter(hours => hours !== 0).length;
 
-  const average = hoursPerDay.reduce(
+  const average = data.hoursPerDay.reduce(
     (count, hour) => count + hour)/ periodLength;
 
   const rating = calculateRating(average);
@@ -65,19 +67,19 @@ const calculateExercises = (hoursPerDay: Array<number>, target: Rating): Result 
   const result: Result = {
     periodLength,
     trainingDays,
-    target,
+    target: data.target,
     average,
     rating,
     ratingDescription,
-    success: (rating >= target),
+    success: (rating >= data.target),
   };
 
   return result;
 };
 
 try {
-  const { target, hoursPerDay } = parseArguments(process.argv);
-  console.log(calculateExercises(hoursPerDay, target));
+  const data = parseArguments(process.argv);
+  console.log(calculateExercises(data));
 } catch (e) {
   console.log('Error, something bad happened, message: ', e.message);
 }
