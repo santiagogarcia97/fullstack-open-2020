@@ -1,68 +1,68 @@
-type Rating = 1 | 2 | 3
+type Rating = 1 | 2 | 3;
 
-interface excerciseData {
-  target: Rating
-  hoursPerDay: Array<number>
+interface ExcerciseData {
+  target: Rating;
+  hoursPerDay: Array<number>;
 }
 
 interface Result {
-  periodLength: number,
-  trainingDays: number,
-  success: boolean,
-  rating: Rating,
-  ratingDescription: string,
-  target: Rating,
-  average: number
+  periodLength: number;
+  trainingDays: number;
+  success: boolean;
+  rating: Rating;
+  ratingDescription: string;
+  target: Rating;
+  average: number;
 }
 
-const parseArguments = (args: Array<string>): excerciseData => {
-  if (args.length < 4) throw new Error('Not enough arguments')
+const parseArguments = (args: Array<string>): ExcerciseData => {
+  if (args.length < 4) throw new Error('Not enough arguments');
 
   try {
-    const target = parseInt(args[2]) as Rating
-    const hoursPerDay = args.slice(3).map(hour => parseFloat(hour))
+    const target = parseInt(args[2]) as Rating;
+    const hoursPerDay = args.slice(3).map(hour => parseFloat(hour));
 
-    return {target, hoursPerDay}
+    return {target, hoursPerDay};
   } catch (e) {
-    throw new Error('Provided values were not numbers!')
+    throw new Error('Provided values were not numbers!');
   }
-}
+};
 
-const calculateExercises = (hoursPerDay: Array<number>, target: Rating) : Result => {
+const calculateExercises = (hoursPerDay: Array<number>, target: Rating): Result => {
 
-  const calculateRating = (avg: number) : Rating => {
+  const calculateRating = (avg: number): Rating => {
     if (avg < 1.5)
-      return 1
+      return 1;
     if (avg >= 1.5 && avg < 2)
-      return 2
+      return 2;
     if (avg >= 2)
-      return 3
-  }
+      return 3;
+  };
 
   const getDescription = (rating: Rating): string => {
     switch (rating) {
       case 1:
-        return 'Bad'
+        return 'Bad';
       case 2:
-        return 'not too bad but could be better'
+        return 'not too bad but could be better';
       case 3:
-        return 'Good'
+        return 'Good';
       default:
-        return 'Wrong Rating'
+        return 'Wrong Rating';
     }
-  }
-  const periodLength = hoursPerDay.length
+  };
+  const periodLength = hoursPerDay.length;
 
-  const trainingDays = hoursPerDay.filter(hours => hours !== 0).length
+  const trainingDays = hoursPerDay.filter(hours => hours !== 0).length;
 
   const average = hoursPerDay.reduce(
-    (count, hour) => count + hour)/ periodLength
+    (count, hour) => count + hour)/ periodLength;
 
-  const rating = calculateRating(average)
+  const rating = calculateRating(average);
 
-  const ratingDescription = getDescription(rating)
+  const ratingDescription = getDescription(rating);
 
-  let result: Result = {
+  const result: Result = {
     periodLength,
     trainingDays,
     target,
@@ -70,14 +70,14 @@ const calculateExercises = (hoursPerDay: Array<number>, target: Rating) : Result
     rating,
     ratingDescription,
     success: (rating >= target),
-  }
+  };
 
-  return result
-}
+  return result;
+};
 
 try {
-  const { target, hoursPerDay } = parseArguments(process.argv)
-  console.log(calculateExercises(hoursPerDay, target))
+  const { target, hoursPerDay } = parseArguments(process.argv);
+  console.log(calculateExercises(hoursPerDay, target));
 } catch (e) {
   console.log('Error, something bad happened, message: ', e.message);
 }

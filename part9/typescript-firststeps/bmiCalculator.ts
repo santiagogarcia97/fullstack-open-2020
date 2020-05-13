@@ -1,48 +1,48 @@
-interface bmiData {
-  height: number
-  mass: number
+interface BmiData {
+  height: number;
+  mass: number;
 }
 
-const parseArgument = (args: Array<string>): bmiData => {
-  if (args.length < 4) throw new Error('Not enough arguments')
-  if (args.length > 4) throw new Error('Too many arguments')
+const parseArgument = (args: Array<string>): BmiData => {
+  if (args.length < 4) throw new Error('Not enough arguments');
+  if (args.length > 4) throw new Error('Too many arguments');
 
   if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
     return {
       height: Number(args[2]),
       mass: Number(args[3])
-    }
+    };
   } else {
-    throw new Error('Provided values were not numbers!')
+    throw new Error('Provided values were not numbers!');
   }
-}
+};
 
-export const calculateBmi = (height: number, mass: number) : string => {
-  const bmi = (mass)/((height/100)^2)
+export const calculateBmi = (height: number, mass: number): string => {
+  const bmi = (mass)/((height/100)^2);
 
   if(bmi <= 15)
-    return 'Very severely underweight'
+    return 'Very severely underweight';
   else if(bmi >= 15 && bmi < 16)
-    return 'Severely underweight'
+    return 'Severely underweight';
   else if(bmi >= 16 && bmi < 18.5)
-    return 'Underweight'
+    return 'Underweight';
   else if(bmi >= 18.5 && bmi < 25)
-    return 'Normal (healthy weight)'
+    return 'Normal (healthy weight)';
   else if(bmi >= 25 && bmi < 30)
-    return 'Overweight'
+    return 'Overweight';
   else if(bmi >= 30 && bmi < 35)
-    return 'Obese Class I (Moderately obese)'
+    return 'Obese Class I (Moderately obese)';
   else if(bmi >= 35 && bmi < 40)
-    return 'Obese Class II (Severely obese)'
+    return 'Obese Class II (Severely obese)';
   else if(bmi >= 40)
-    return 'Obese Class III (Very severely obese)'
+    return 'Obese Class III (Very severely obese)';
   else
-    return 'error'
-}
+    return 'error';
+};
 
 try {
-  const { height, mass } = parseArgument(process.argv)
-  console.log(calculateBmi(height, mass))
+  const { height, mass } = parseArgument(process.argv);
+  console.log(calculateBmi(height, mass));
 } catch (e) {
   console.log('Error, something bad happened, message: ', e.message);
 }
