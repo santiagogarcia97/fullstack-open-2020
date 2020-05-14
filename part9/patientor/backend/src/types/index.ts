@@ -12,3 +12,7 @@ export interface PatientEntry {
   gender: string;
   occupation: string;
 }
+
+export type NonSensitiveDiaryEntry = Omit<PatientEntry, 'ssn'>;
+
+export type newPatientEntry = Omit<PatientEntry, 'id'>;

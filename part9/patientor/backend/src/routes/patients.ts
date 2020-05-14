@@ -5,10 +5,18 @@ const router = express.Router();
 
 router.get('/', (_req, res) => {
   res.send(patientService.getNonSensitiveEntries());
-})
+});
 
-router.post('/', (_req, res) => {
-  res.send('Saving a diagnose!');
-})
+router.post('/', (req, res) => {
+  const { name, dateOfBirth, ssn, gender, occupation } = req.body;
+  const newPatientEntry = patientService.addEntry({
+    name,
+    dateOfBirth,
+    ssn,
+    gender,
+    occupation
+  });
+  res.json(newPatientEntry);
+});
 
 export default router;
