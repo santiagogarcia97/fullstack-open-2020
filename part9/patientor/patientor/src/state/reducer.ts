@@ -19,7 +19,7 @@ export type Action =
     payload: Patient;
   }
   | {
-    type: "SET_DIAGNOSIS_LIST";
+    type: 'SET_DIAGNOSIS_LIST';
     payload: Diagnosis[];
   };
 
@@ -53,7 +53,7 @@ export const updatePatient = (payload: Patient): Action => {
 
 export const setDiagnosisList = (payload: Diagnosis[]): Action => {
   return {
-    type: "SET_DIAGNOSIS_LIST",
+    type: 'SET_DIAGNOSIS_LIST',
     payload,
   };
 };
@@ -88,7 +88,7 @@ export const reducer = (state: State, action: Action): State => {
         [action.payload.id]: action.payload,
       },
     };
-  case "SET_DIAGNOSIS_LIST":
+  case 'SET_DIAGNOSIS_LIST':
     return {
       ...state,
       diagnoses: {
