@@ -1,15 +1,4 @@
-import {Gender, NewPatientEntry} from '../types';
-
-const toNewPatientEntry = (object: any): NewPatientEntry => {
-  return {
-    name: parseString(object.name),
-    dateOfBirth: parseDate(object.dateOfBirth),
-    ssn: parseString(object.ssn),
-    gender: parseGender(object.gender),
-    occupation: parseString(object.occupation),
-    entries: []
-  }
-}
+import {Entry, Gender, NewPatientEntry} from '../types';
 
 const isString = (text: any): text is string => {
   return typeof text === 'string' || text instanceof String;
@@ -21,6 +10,14 @@ const isDate = (date: string): boolean => {
 
 const isGender = (param: any): param is Gender => {
   return Object.values(Gender).includes(param);
+};
+
+const isEntryValid = (param: any): param is Entry => {
+  return (param.type &&
+    (param.type === 'HealthCheck') ||
+    (param.type === 'OccupationalHealthcare') ||
+    (param.type === 'Hospital')
+  );
 };
 
 const parseString = (text: any): string => {
@@ -43,6 +40,26 @@ const parseGender = (gender: any): Gender => {
     throw new Error('Incorrect or missing gender: ' + gender);
   }
   return gender;
+};
+
+const parseEntries = (entries: Array<any>): Array<Entry> => {
+  entries.forEach((entry: Entry) => {
+    if (!isEntryValid(entry)) {
+      throw new Error('Incorrect entry type: ' + entry);
+    }
+  });
+  return entries;
+};
+
+const toNewPatientEntry = (object: any): NewPatientEntry => {
+  return {
+    name: parseString(object.name),
+    dateOfBirth: parseDate(object.dateOfBirth),
+    ssn: parseString(object.ssn),
+    gender: parseGender(object.gender),
+    occupation: parseString(object.occupation),
+    entries: parseEntries(object.entries)
+  };
 };
 
 export default toNewPatientEntry;

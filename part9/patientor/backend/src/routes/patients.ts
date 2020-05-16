@@ -1,6 +1,6 @@
 import express from 'express';
-import patientService from "../services/patientService";
-import toNewPatientEntry from "../utils/patientValidation";
+import patientService from '../services/patientService';
+import toNewPatientEntry from '../utils/patientValidation';
 
 const router = express.Router();
 
@@ -9,13 +9,13 @@ router.get('/', (_req, res) => {
 });
 
 router.get('/:id', (req, res) => {
-  const id = req.params.id
-  const patient = patientService.findById(id)
+  const id = req.params.id;
+  const patient = patientService.findById(id);
 
   if(patient){
     res.send(patient);
   } else {
-    res.status(404).send({error: 'no patient found'})
+    res.status(404).send({error: 'no patient found'});
   }
 
 });
