@@ -42,6 +42,14 @@ const PatientDetailsPage: React.FC = () => {
         </Header>
         <div><strong>ssn: </strong>{patient.ssn}</div>
         <div><strong>occupation: </strong>{patient.occupation}</div>
+        <div>
+          {patient.entries?.map(e =>
+            <div key={e.id}>
+              <p>{e.date} {e.description}</p>
+              {e.diagnosisCodes?.map((d, i) => <p key={i}>{d}</p>)}
+            </div>
+          )}
+        </div>
       </>
     );
   } else {
