@@ -29,7 +29,7 @@ const HealthCheckEntryCard: React.FC<Props> = ({ entry }) => {
   }
 
   return (
-    <Card>
+    <Card fluid>
       <Card.Content>
         <Card.Header>
           {entry.date} <Icon name="doctor" />

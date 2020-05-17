@@ -9,7 +9,7 @@ interface Props {
 
 const HospitalEntryCard: React.FC<Props> = ({ entry, diagnoses }) => {
   return (
-    <Card>
+    <Card fluid>
       <Card.Content>
         <Card.Header>
           {entry.date} <Icon name="hospital" />

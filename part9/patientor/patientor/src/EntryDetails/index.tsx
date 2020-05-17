@@ -6,6 +6,7 @@ import HealthCheckEntryCard from './HealthCheckEntryCard';
 import OccupationalHealthcareEntryCard from './OccupationalHealthcareEntryCard';
 
 const assertNever = (value: never): never => {
+  console.log(value);
   throw new Error(
     `Unhandled discriminated union member: ${JSON.stringify(value)}`
   );

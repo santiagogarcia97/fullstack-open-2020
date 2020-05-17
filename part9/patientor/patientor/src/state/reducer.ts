@@ -72,11 +72,18 @@ export const reducer = (state: State, action: Action): State => {
       }
     };
   case 'ADD_PATIENT':
-  case 'UPDATE_PATIENT':
     return {
       ...state,
       patients: {
         ...state.patients,
+        [action.payload.id]: action.payload
+      }
+    };
+  case 'UPDATE_PATIENT':
+    return {
+      ...state,
+      patientDetails: {
+        ...state.patientDetails,
         [action.payload.id]: action.payload
       }
     };
