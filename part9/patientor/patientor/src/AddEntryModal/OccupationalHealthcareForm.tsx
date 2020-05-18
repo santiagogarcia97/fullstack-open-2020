@@ -1,20 +1,20 @@
 import React from 'react';
-import { Grid, Button, FormGroup } from 'semantic-ui-react';
+import {Grid, Button, FormGroup} from 'semantic-ui-react';
 import {Field, Formik, Form} from 'formik';
 
 import {TextField, DiagnosisSelection} from './FormField';
-import {HospitalEntry} from '../types';
+import {OccupationalHealthcareEntry} from '../types';
 import {useStateValue} from '../state';
-import {HospitalSchema} from './formValidations';
+import {OccupationalHealthcareSchema} from './formValidations';
 
-export type HospitalFormValues = Omit<HospitalEntry, 'id'>;
+export type OccupationalHealthcareFormValues = Omit<OccupationalHealthcareEntry, 'id'>;
 
 interface Props {
-  onSubmit: (values: HospitalFormValues) => void;
+  onSubmit: (values: OccupationalHealthcareFormValues) => void;
   onCancel: () => void;
 }
 
-export const HospitalForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
+export const OccupationalHealthcareForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
   const [{ diagnoses }] = useStateValue();
 
   return (
@@ -24,14 +24,15 @@ export const HospitalForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
         date: '',
         specialist: '',
         diagnosisCodes: [''],
-        type: 'Hospital',
-        discharge: {
-          date: '',
-          criteria: ''
+        type: 'OccupationalHealthcare',
+        employerName: '',
+        sickLeave: {
+          startDate: '',
+          endDate: ''
         }
       }}
       onSubmit={onSubmit}
-      validationSchema={HospitalSchema}
+      validationSchema={OccupationalHealthcareSchema}
     >
       {({isValid, dirty, setFieldValue, setFieldTouched}) => {
         return (
@@ -54,18 +55,24 @@ export const HospitalForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
               name="specialist"
               component={TextField}
             />
-            <p><strong>Discharge:</strong></p>
+            <Field
+              label="Employer name"
+              placeholder="Employer name"
+              name="employerName"
+              component={TextField}
+            />
+            <p><strong>Sick leave:</strong></p>
             <FormGroup widths='equal'>
               <Field
-                label="Date"
+                label="Start date"
                 placeholder="YYYY-MM-DD"
-                name="discharge.date"
+                name="sickLeave.startDate"
                 component={TextField}
               />
               <Field
-                label="Criteria"
-                placeholder="Criteria"
-                name="discharge.criteria"
+                label="End date"
+                placeholder="YYYY-MM-DD"
+                name="sickLeave.endDate"
                 component={TextField}
               />
             </FormGroup>
@@ -98,4 +105,4 @@ export const HospitalForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
   );
 };
 
-export default HospitalForm;
+export default OccupationalHealthcareForm;

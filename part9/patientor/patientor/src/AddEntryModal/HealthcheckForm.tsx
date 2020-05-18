@@ -5,7 +5,7 @@ import {Field, Formik, Form} from 'formik';
 import {TextField, NumberField, DiagnosisSelection} from './FormField';
 import { HealthCheckEntry, HealthCheckRating} from '../types';
 import {useStateValue} from '../state';
-import {HealthCheckSchema} from './formValidations'
+import {HealthCheckSchema} from './formValidations';
 
 export type HealthcheckFormValues = Omit<HealthCheckEntry, 'id'>;
 

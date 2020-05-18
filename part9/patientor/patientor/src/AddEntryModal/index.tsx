@@ -6,7 +6,8 @@ import {Entry} from '../types';
 import {apiBaseUrl} from '../constants';
 import {updatePatient, useStateValue} from '../state';
 import {PatientEntry} from '../../../backend/src/types';
-import HospitalForm from "./HospitalForm";
+import HospitalForm from './HospitalForm';
+import OccupationalHealthcareForm from './OccupationalHealthcareForm';
 
 interface Props {
   modalOpen: boolean;
@@ -52,7 +53,7 @@ const AddEntryModal = ({ modalOpen, onClose, error, patientId }: Props) => {
     case 'HealthCheck':
       return <HealthCheckForm onSubmit={submitNewEntry} onCancel={onClose} />;
     case 'OccupationalHealthcare':
-      return 'asfsafasf';
+      return <OccupationalHealthcareForm onSubmit={submitNewEntry} onCancel={onClose}/>;
     case 'Hospital':
       return <HospitalForm onSubmit={submitNewEntry} onCancel={onClose} />;
     default:
@@ -77,7 +78,6 @@ const AddEntryModal = ({ modalOpen, onClose, error, patientId }: Props) => {
         {renderEntryForm()}
 
         {error && <Segment inverted color="red">{`Error: ${error}`}</Segment>}
-        {/*<AddPatientForm onSubmit={onSubmit} onCancel={onClose} />*/}
       </Modal.Content>
     </Modal>
   );
