@@ -33,6 +33,8 @@ https://phonebook-fs20.herokuapp.com/
 | 6     | 21/21   |
 | 7     | 21/21   |
 | 8     | 26/26   |
+| 9     | 27/27   |
+| Total | 201/201 |
 
 ## Course material
 ### Part 0: Fundamentals of Web apps
@@ -82,3 +84,8 @@ https://phonebook-fs20.herokuapp.com/
 	* Database and user administration
 	* Login and updating the cache
 	* Fragments and subscriptions
+### Part 9: TypeScript
+	* Background and introduction
+	* First steps with Typescript
+	* Typing the express app
+	* React with types
