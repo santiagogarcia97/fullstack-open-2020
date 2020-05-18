@@ -1,24 +1,26 @@
 import {HealthCheckRating} from "../types";
-import {HealthcheckFormValues} from "./HealthcheckForm";
+import * as Yup from 'yup';
 
-export const healthCheckValidations = (values: HealthcheckFormValues) => {
-  const requiredError = 'Field is required';
+export const HealthCheckSchema = Yup.object().shape({
+  description: Yup.string()
+    .required('Description required'),
+  date: Yup.date()
+    .required('Date required'),
+  specialist: Yup.string()
+    .required('Required'),
+  healthCheckRating: Yup.string().oneOf(Object.keys(HealthCheckRating))
+});
 
-  const errors: { [field: string]: string } = {};
-  if (!values.description || values.description === '') {
-    errors.description = requiredError;
-  }
-  if (isNaN(Date.parse(values.date))) {
-    errors.date = 'Invalid date';
-  }
-  if (!values.date || values.date === '') {
-    errors.date = requiredError;
-  }
-  if (!values.specialist) {
-    errors.specialist = requiredError;
-  }
-  if (!(values.healthCheckRating in HealthCheckRating)) {
-    errors.healthCheckRating = 'Invalid value';
-  }
-  return errors;
-};
+export const HospitalSchema = Yup.object().shape({
+  description: Yup.string()
+    .required('Description required'),
+  date: Yup.date()
+    .required('Date required'),
+  specialist: Yup.string()
+    .required('Required'),
+  discharge: Yup.object().shape(
+    {
+      date: Yup.date().required('Required date'),
+      criteria: Yup.string().required('Criteria required'),
+    })
+});

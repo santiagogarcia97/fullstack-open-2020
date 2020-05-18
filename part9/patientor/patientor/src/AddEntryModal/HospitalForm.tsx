@@ -1,20 +1,20 @@
 import React from 'react';
-import { Grid, Button } from 'semantic-ui-react';
+import { Grid, Button, FormGroup } from 'semantic-ui-react';
 import {Field, Formik, Form} from 'formik';
 
-import {TextField, NumberField, DiagnosisSelection} from './FormField';
-import { HealthCheckEntry, HealthCheckRating} from '../types';
+import {TextField, DiagnosisSelection} from './FormField';
+import {HospitalEntry} from '../types';
 import {useStateValue} from '../state';
-import {HealthCheckSchema} from './formValidations'
+import {HospitalSchema} from './formValidations'
 
-export type HealthcheckFormValues = Omit<HealthCheckEntry, 'id'>;
+export type HospitalFormValues = Omit<HospitalEntry, 'id'>;
 
 interface Props {
-  onSubmit: (values: HealthcheckFormValues) => void;
+  onSubmit: (values: HospitalFormValues) => void;
   onCancel: () => void;
 }
 
-export const HealthCheckForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
+export const HospitalForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
   const [{ diagnoses }] = useStateValue();
 
   return (
@@ -24,11 +24,14 @@ export const HealthCheckForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
         date: '',
         specialist: '',
         diagnosisCodes: [''],
-        type: 'HealthCheck',
-        healthCheckRating: HealthCheckRating.Healthy
+        type: 'Hospital',
+        discharge: {
+          date: '',
+          criteria: ''
+        }
       }}
       onSubmit={onSubmit}
-      validationSchema={HealthCheckSchema}
+      validationSchema={HospitalSchema}
     >
       {({isValid, dirty, setFieldValue, setFieldTouched}) => {
         return (
@@ -51,13 +54,21 @@ export const HealthCheckForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
               name="specialist"
               component={TextField}
             />
-            <Field
-              label='HealthCheckRating'
-              min='0'
-              max='3'
-              name='healthCheckRating'
-              component={NumberField}
-            />
+            <p><strong>Discharge:</strong></p>
+            <FormGroup widths='equal'>
+              <Field
+                label="Date"
+                placeholder="YYYY-MM-DD"
+                name="discharge.date"
+                component={TextField}
+              />
+              <Field
+                label="Criteria"
+                placeholder="Criteria"
+                name="discharge.criteria"
+                component={TextField}
+              />
+            </FormGroup>
             <DiagnosisSelection
               setFieldValue={setFieldValue}
               setFieldTouched={setFieldTouched}
@@ -87,4 +98,4 @@ export const HealthCheckForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
   );
 };
 
-export default HealthCheckForm;
+export default HospitalForm;

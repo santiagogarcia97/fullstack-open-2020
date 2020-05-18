@@ -6,6 +6,7 @@ import {Entry} from '../types';
 import {apiBaseUrl} from '../constants';
 import {updatePatient, useStateValue} from '../state';
 import {PatientEntry} from '../../../backend/src/types';
+import HospitalForm from "./HospitalForm";
 
 interface Props {
   modalOpen: boolean;
@@ -49,11 +50,11 @@ const AddEntryModal = ({ modalOpen, onClose, error, patientId }: Props) => {
   const renderEntryForm = () =>{
     switch (entryType) {
     case 'HealthCheck':
-      return <HealthCheckForm onCancel={onClose} onSubmit={submitNewEntry}/>;
+      return <HealthCheckForm onSubmit={submitNewEntry} onCancel={onClose} />;
     case 'OccupationalHealthcare':
       return 'asfsafasf';
     case 'Hospital':
-      return 'xcvxcvxcv';
+      return <HospitalForm onSubmit={submitNewEntry} onCancel={onClose} />;
     default:
       return null;
     }
