@@ -1,10 +1,11 @@
 import React from 'react';
 import { Grid, Button } from 'semantic-ui-react';
-import { Field, Formik, Form } from 'formik';
+import {Field, Formik, Form} from 'formik';
 
 import {TextField, NumberField, DiagnosisSelection} from './FormField';
 import { HealthCheckEntry, HealthCheckRating} from '../types';
 import {useStateValue} from '../state';
+import {healthCheckValidations} from './formValidations'
 
 export type HealthcheckFormValues = Omit<HealthCheckEntry, 'id'>;
 
@@ -27,26 +28,7 @@ export const HealthCheckForm: React.FC<Props> = ({ onCancel, onSubmit }) => {
         healthCheckRating: HealthCheckRating.Healthy
       }}
       onSubmit={onSubmit}
-      validate={values => {
-        const requiredError = 'Field is required';
-        const errors: { [field: string]: string } = {};
-        if (!values.description) {
-          errors.name = requiredError;
-        }
-        if (!values.date) {
-          errors.ssn = requiredError;
-        }
-        if (!values.specialist) {
-          errors.dateOfBirth = requiredError;
-        }
-        if (!values.healthCheckRating) {
-          errors.occupation = requiredError;
-        }
-        if (!values.diagnosisCodes) {
-          errors.occupation = requiredError;
-        }
-        return errors;
-      }}
+      validate={values => healthCheckValidations(values)}
     >
       {({isValid, dirty, setFieldValue, setFieldTouched}) => {
         return (
